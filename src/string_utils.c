@@ -6,23 +6,12 @@
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:16:15 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/22 14:59:47 by tde-raev         ###   ########.fr       */
+/*   Updated: 2025/05/22 16:17:30 by tde-raev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h" // Includes your minishell.h
 
-/*
- * @brief Compares two strings.
- *
- * This function compares the string s1 to the string s2.
- * It returns an integer less than, equal to, or greater than zero if s1
- * is found, respectively, to be less than, to match, or be greater than s2.
- *
- * @param s1 The first string to compare.
- * @param s2 The second string to compare.
- * @return An integer indicating the result of the comparison.
- */
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	while (*s1 != '\0' && *s2 != '\0' && *s1 == *s2)
@@ -97,17 +86,6 @@ char	*read_echo(char *line)
 	return (result);
 }
 
-/*
- * @brief Joins two strings and frees the first string.
- *
- * This function concatenates string s1 and string s2, then frees the memory
- * allocated for s1. It's useful for building strings iteratively.
- *
- * @param s1 The first string to join (will be freed).
- * @param s2 The second string to join (const).
- * @return A newly allocated string containing the concatenation of s1 and s2,
- * or NULL if memory allocation fails.
- */
 char	*ft_strjoin_free(char *s1, char const *s2)
 {
 	char	*result;
