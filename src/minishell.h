@@ -6,50 +6,75 @@
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:06:14 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/21 13:06:43 by tde-raev         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:27:05 by tde-raev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
 
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
-#include <dirent.h>
-#include <termios.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <signal.h>
-#include <fcntl.h>
-#include <errno.h>
-#include "../libft/libft.h"
+// Standard library includes
+# include <sys/types.h> // For various system data types
+# include <sys/wait.h>  // For waitpid
+# include <sys/stat.h>  // For stat (file status)
+# include <dirent.h>    // For directory operations
+# include <termios.h>   // For terminal control
+# include <unistd.h>    // For POSIX API (e.g., fork, exec, read, write)
+# include <stdio.h>     // For standard I/O (e.g., printf, perror)
+# include <stdlib.h>    // For general utilities (e.g., malloc, free, exit)
+# include <readline/readline.h> // For readline function
+# include <readline/history.h>  // For history management
+# include <signal.h>    // For signal handling
+# include <fcntl.h>     // For file control (e.g., open)
+# include <errno.h>     // For error number definitions
+# include <string.h>    // For string manipulation (e.g., strcmp, strlen)
 
+// Custom library include (assuming libft.h is in ../libft/)
+# include "../libft/libft.h"
+
+// Enum for token types
 typedef enum e_token_type
 {
-	WORD,	// words
-	PIPE,	// |
-	IN,     // <
-	OUT,    // >
-	APPEND, // >>
-	HEREDOC // <<
+	WORD,    // Regular words or commands
+	PIPE,    // |
+	IN,      // < (input redirection)
+	OUT,     // > (output redirection)
+	APPEND,  // >> (append output redirection)
+	HEREDOC  // << (here-document)
 }	t_token_type;
 
+// Struct for a token
 typedef struct s_token
 {
-	t_token_type	type;
-	char			*c;
+	t_token_type	type; // The type of the token
+	char			*c;   // The string value of the token
 }	t_token;
 
+// --- Prototypes for functions in string_utils.c ---
 int		ft_strcmp(const char *s1, const char *s2);
 char	*read_echo(char *line);
+char	*ft_strjoin_free(char *s1, char const *s2);
+void	ft_free_split(char **split); // Added prototype for ft_free_split
+
+// --- Prototypes for functions in system_utils.c ---
 void	shutdown_seq(void);
 void	handle_C(int signo);
 void	do_pwd(void);
-void	check_command(char  **lines);
-char	*ft_strjoin_free(char *s1, char const *s2);
+
+// --- Prototypes for functions in lexer_utils.c ---
+t_token	*new_token(t_token_type type, char *value);
+void	skip_whitespace(const char **str);
+int		get_word_len(const char *str);
+void	free_tokens_array(t_token **tokens);
+
+// --- Prototypes for functions in token_handlers.c ---
+// Returns 1 if a token was handled, 0 on malloc failure, -1 if no token matched.
+int		handle_token_type(const char **current_pos, t_token ***tokens,
+			int *token_idx);
+
+// --- Prototypes for functions in minishell.c ---
+void	check_command(char **lines);
+t_token	**make_tokens(char *line); // Main tokenization function
 
 #endif
+

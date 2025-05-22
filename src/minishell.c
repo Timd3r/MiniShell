@@ -6,7 +6,7 @@
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:00:38 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/21 14:02:17 by tde-raev         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:24:47 by tde-raev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,42 @@ void	check_command(char	**lines)
 	}
 }
 
-t_token	**make_tokens()
+/*
+ * @brief Creates an array of tokens from an input line.
+ *
+ * This function parses the input line, identifying words, pipes, and
+ * redirection operators, and converts them into an array of t_token
+ * structures. The array is NULL-terminated.
+ *
+ * @param line The input string to be tokenized.
+ * @return A NULL-terminated array of t_token pointers, or NULL if
+ * memory allocation fails at any point or an unexpected character is found.
+*/
+t_token	**make_tokens(char *line)
 {
+	t_token		**tokens;
+	int			token_idx;
+	const char	*current_pos;
+	int			ret;
 
+	// Overallocate to simplify initial allocation; a more precise count
+	// would require a first pass. Max possible tokens is strlen(line).
+	tokens = malloc(sizeof(t_token *) * (ft_strlen(line) + 1));
+	if (!tokens)
+		return (perror("minishell: malloc failed for tokens array"), NULL);
+	token_idx = 0;
+	current_pos = line;
+	while (*current_pos)
+	{
+		skip_whitespace(&current_pos);
+		if (*current_pos == '\0')
+			break ;
+		ret = handle_token_type(&current_pos, &tokens, &token_idx);
+		if (ret == 0 || ret == -1) // 0 for malloc fail, -1 for unexpected char
+			return (free_tokens_array(tokens), NULL);
+	}
+	tokens[token_idx] = NULL; // Null-terminate the array of token pointers
+	return (tokens);
 }
 
 int	main(void)
