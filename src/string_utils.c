@@ -6,7 +6,7 @@
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:16:15 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/22 16:17:30 by tde-raev         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:48:42 by tde-raev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ int	ft_strcmp(const char *s1, const char *s2)
  * or an empty string if the input is not an "echo" command.
  * Returns NULL on allocation failure.
  */
+
+
+
+
 char	*read_echo(char *line)
 {
 	int		i;
@@ -85,6 +89,7 @@ char	*read_echo(char *line)
 	ft_free_split(split); // Free the split array
 	return (result);
 }
+
 
 char	*ft_strjoin_free(char *s1, char const *s2)
 {
