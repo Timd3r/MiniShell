@@ -6,7 +6,7 @@
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:06:14 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/21 15:27:05 by tde-raev         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:48:09 by tde-raev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,10 @@ int		handle_token_type(const char **current_pos, t_token ***tokens,
 // --- Prototypes for functions in minishell.c ---
 void	check_command(char **lines);
 t_token	**make_tokens(char *line); // Main tokenization function
+
+
+//testing tokens
+void print_tokens(t_token **tokens);
 
 #endif
 

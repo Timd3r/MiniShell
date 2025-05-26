@@ -6,7 +6,7 @@
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:00:38 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/21 15:24:47 by tde-raev         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:47:38 by tde-raev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	main(void)
 	char	*line;
 	char	*prompt;
 	char	**split_line;
+	t_token	**tokens;
 
 	prompt = "\033[1;36mMiniShell\033[0m\033[1;31m> \033[0m";
 	signal(SIGINT, handle_C);
@@ -85,7 +86,8 @@ int	main(void)
 		{
 			add_history(line);
 			split_line = ft_split(line, '|');
-			make_tokens(line);
+			tokens = make_tokens(line);
+			print_tokens(tokens);
 			check_command(split_line);
 			if (!ft_strcmp(line, "exit"))
 			{

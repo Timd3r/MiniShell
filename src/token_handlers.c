@@ -6,7 +6,7 @@
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:18:23 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/21 15:18:36 by tde-raev         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:36:25 by tde-raev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,13 @@ static int	handle_word(const char **current_pos, t_token ***tokens,
 		perror("minishell: malloc failed for word_val");
 		return (0); // Malloc failed
 	}
-	ft_strlcpy(word_val, *current_pos, word_len + 1);
+	if (**current_pos == '\'' || **current_pos == '"')
+	{
+		(*current_pos)++;
+		ft_strlcpy(word_val, *current_pos, word_len);
+	}
+	else
+		ft_strlcpy(word_val, *current_pos, word_len + 1);
 	(*tokens)[(*token_idx)++] = new_token(WORD, word_val);
 	if (!(*tokens)[*token_idx - 1]) // Check if new_token failed
 	{
