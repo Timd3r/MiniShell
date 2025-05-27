@@ -6,7 +6,7 @@
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:06:14 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/26 15:48:09 by tde-raev         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:26:59 by tde-raev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,22 @@ typedef struct s_token
 	t_token_type	type; // The type of the token
 	char			*c;   // The string value of the token
 }	t_token;
+
+typedef struct s_command
+{
+	char				*name;  // The command name (e.g., "ls", "grep", "echo", "cd")
+	char				**args; // The command arguments (NULL-terminated array: ["-l", NULL] for "ls -l")
+	t_redir				**redirections; // List of redirections for this command (NULL-terminated array of t_redir *)
+	int					input_pipe; // Flag: 1 if input comes from a pipe, 0 otherwise
+	int					output_pipe; // Flag: 1 if output goes to a pipe, 0 otherwise
+	struct s_command	*next; // Pointer to the next command in the pipeline (NULL if last)
+} t_command;
+
+typedef struct s_redir
+{
+	t_token_type	type;     // Type of redirection (IN, OUT, APPEND, HEREDOC) [2, 4]
+	char			*file;    // The filename or delimiter string [2, 4]
+} t_redir;
 
 // --- Prototypes for functions in string_utils.c ---
 int		ft_strcmp(const char *s1, const char *s2);
