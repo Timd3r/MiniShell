@@ -12,7 +12,7 @@
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
-SRC = src/minishell.c src/lexer_utils.c src/system_utils.c src/string_utils.c src/token_handlers.c src/free_utils.c
+SRC = src/minishell.c src/lexer_utils.c src/system_utils.c src/string_utils.c src/token_handlers.c src/free_utils.c src/parser.c src/executor.c src/utils.c
 OBJ = obj
 NAME = minishell
 EXEC_OBJS = $(SRC:src/%.c=obj/%.o)

@@ -12,6 +12,9 @@
 
 #include "minishell.h" // Includes your minishell.h
 
+// Global variable for signal handling (as required by subject)
+volatile sig_atomic_t g_signal_received = 0;
+
 /*
  * @brief Displays a shutdown sequence with a fading effect.
  *
@@ -52,11 +55,9 @@ void	shutdown_seq(void)
  */
 void	handle_C(int signo)
 {
-	(void)signo; // Cast to void to suppress unused parameter warning
+	g_signal_received = signo;
 	printf("\n");
 	fflush(stdout);
-	rl_replace_line("", 0); // Clear the current input line
-	rl_on_new_line();       // Move to a new line
 }
 
 /*

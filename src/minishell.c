@@ -12,21 +12,6 @@
 
 #include "minishell.h"
 
-void	check_command(char	**lines)
-{
-	int		i;
-	char	**split_lines;
-
-	i = 0;
-	while (lines[i] != NULL)
-	{
-		split_lines = ft_split(lines[i], ' ');
-		if (!ft_strcmp(split_lines[0], "pwd") && split_lines[1] == NULL)
-			do_pwd();
-		i++;
-	}
-}
-
 /*
  * @brief Creates an array of tokens from an input line.
  *
@@ -67,10 +52,10 @@ t_token	**make_tokens(char *line)
 
 int	main(void)
 {
-	char	*line;
-	char	*prompt;
-	char	**split_line;
-	t_token	**tokens;
+	char			*line;
+	char			*prompt;
+	t_token			**tokens;
+	t_simple_cmd	*cmd;
 
 	prompt = "\033[1;36mMiniShell\033[0m\033[1;31m> \033[0m";
 	signal(SIGINT, handle_C);
@@ -85,16 +70,17 @@ int	main(void)
 		if (*line)
 		{
 			add_history(line);
-			split_line = ft_split(line, '|');
 			tokens = make_tokens(line);
-			print_tokens(tokens);
-			check_command(split_line);
-			if (!ft_strcmp(line, "exit"))
+			if (tokens)
 			{
-				shutdown_seq();
-				break ;
+				cmd = parse_simple_command(tokens);
+				if (cmd)
+				{
+					execute_simple_command(cmd);
+					free_simple_cmd(cmd);
+				}
+				free_tokens_array(tokens);
 			}
-			printf("%s", read_echo(line));
 		}
 		free(line);
 	}

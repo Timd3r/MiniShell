@@ -32,6 +32,12 @@
 // Custom library include (assuming libft.h is in ../libft/)
 # include "../libft/libft.h"
 
+// External variable for environment
+extern char **environ;
+
+// Global variable for signal handling (as required by subject)
+extern volatile sig_atomic_t g_signal_received;
+
 // Enum for token types
 typedef enum e_token_type
 {
@@ -50,9 +56,18 @@ typedef struct s_token
 	char			*c;   // The string value of the token
 }	t_token;
 
+// Struct for a simple command (no pipes yet, just single commands)
+typedef struct s_simple_cmd
+{
+	char	**args;		// NULL-terminated array of arguments
+	char	*input_file;	// Input redirection file (< or <<)
+	char	*output_file;	// Output redirection file (> or >>)
+	int		append_mode;	// 1 if >>, 0 if >
+	int		is_heredoc;	// 1 if <<, 0 if <
+}	t_simple_cmd;
+
 // --- Prototypes for functions in string_utils.c ---
 int		ft_strcmp(const char *s1, const char *s2);
-char	*read_echo(char *line);
 char	*ft_strjoin_free(char *s1, char const *s2);
 void	ft_free_split(char **split); // Added prototype for ft_free_split
 
@@ -73,9 +88,16 @@ int		handle_token_type(const char **current_pos, t_token ***tokens,
 			int *token_idx);
 
 // --- Prototypes for functions in minishell.c ---
-void	check_command(char **lines);
 t_token	**make_tokens(char *line); // Main tokenization function
 
+// --- Prototypes for functions in parser.c ---
+t_simple_cmd	*parse_simple_command(t_token **tokens);
+void		free_simple_cmd(t_simple_cmd *cmd);
+
+// --- Prototypes for functions in executor.c ---
+int		execute_simple_command(t_simple_cmd *cmd);
+int		is_builtin(char *cmd);
+int		execute_builtin(t_simple_cmd *cmd);
 
 //testing tokens
 void print_tokens(t_token **tokens);
