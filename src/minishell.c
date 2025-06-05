@@ -89,6 +89,17 @@ int	main(void)
 			tokens = make_tokens(line);
 			print_tokens(tokens);
 			check_command(split_line);
+			//if statement to check if the first toke is 'cd'
+			if (tokens && tokens[0] && !ft_strcmp(tokens[0]->c, "cd"))
+			{
+				execute_cd(tokens);
+			}
+			t_command *commands = build_commands(tokens);
+			if (commands)
+			{
+				print_commands(commands);
+				free_commands(commands);
+			}
 			if (!ft_strcmp(line, "exit"))
 			{
 				shutdown_seq();

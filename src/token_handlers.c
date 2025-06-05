@@ -137,4 +137,3 @@ int	handle_token_type(const char **current_pos, t_token ***tokens,
 		return (ret);
 	return (-1); // No token type matched
 }
-
