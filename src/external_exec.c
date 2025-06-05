@@ -1,0 +1,148 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   external_exec.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/27 16:35:00 by tde-raev          #+#    #+#             */
+/*   Updated: 2025/05/27 16:35:00 by tde-raev         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+/*
+ * @brief Searches for executable in PATH directories.
+ *
+ * @param cmd The command name.
+ * @param paths Array of PATH directories.
+ * @return Full path to executable or NULL.
+ */
+static char	*search_in_paths(char *cmd, char **paths)
+{
+	char	*full_path;
+	char	*temp;
+	int		i;
+
+	i = 0;
+	while (paths[i])
+	{
+		temp = ft_strjoin(paths[i], "/");
+		full_path = ft_strjoin(temp, cmd);
+		free(temp);
+		if (access(full_path, X_OK) == 0)
+		{
+			ft_free_split(paths);
+			return (full_path);
+		}
+		free(full_path);
+		i++;
+	}
+	ft_free_split(paths);
+	return (NULL);
+}
+
+/*
+ * @brief Finds the full path of an executable using PATH environment variable.
+ *
+ * This function searches for an executable in the directories listed in
+ * the PATH environment variable.
+ *
+ * @param cmd The command name to search for.
+ * @return The full path to the executable, or NULL if not found.
+ */
+char	*find_executable_path(char *cmd)
+{
+	char	*path_env;
+	char	**paths;
+
+	if (!cmd)
+		return (NULL);
+	if (ft_strchr(cmd, '/'))
+		return (ft_strdup(cmd));
+	path_env = getenv("PATH");
+	if (!path_env)
+		return (NULL);
+	paths = ft_split(path_env, ':');
+	if (!paths)
+		return (NULL);
+	return (search_in_paths(cmd, paths));
+}
+
+/*
+ * @brief Handles child process execution.
+ */
+static void	child_process(t_simple_cmd *cmd, char *executable_path,
+				t_shell *shell)
+{
+	extern char	**environ;
+
+	setup_exec_signals();
+	if (shell && shell->env)
+	{
+		if (execve(executable_path, cmd->args, shell->env) == -1)
+		{
+			perror("minishell: execve failed");
+			exit(127);
+		}
+	}
+	else
+	{
+		if (execve(executable_path, cmd->args, environ) == -1)
+		{
+			perror("minishell: execve failed");
+			exit(127);
+		}
+	}
+}
+
+/*
+ * @brief Handles parent process after fork.
+ */
+static int	parent_process(pid_t pid, char *executable_path)
+{
+	int	status;
+
+	if (pid > 0)
+	{
+		waitpid(pid, &status, 0);
+		free(executable_path);
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
+		else if (WIFSIGNALED(status))
+			return (128 + WTERMSIG(status));
+		return (1);
+	}
+	else
+	{
+		perror("minishell: fork failed");
+		free(executable_path);
+		return (1);
+	}
+}
+
+/*
+ * @brief Executes an external command with shell context.
+ *
+ * @param cmd The command structure.
+ * @param executable_path Path to the executable.
+ * @param shell The shell context.
+ * @return Exit status of the command.
+ */
+int	execute_external_shell(t_simple_cmd *cmd, char *executable_path,
+			t_shell *shell)
+{
+	pid_t	pid;
+
+	if (!cmd || !executable_path)
+	{
+		if (executable_path)
+			free(executable_path);
+		return (1);
+	}
+	pid = fork();
+	if (pid == 0)
+		child_process(cmd, executable_path, shell);
+	return (parent_process(pid, executable_path));
+}

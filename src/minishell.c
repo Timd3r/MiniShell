@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+volatile sig_atomic_t		g_signal_received = 0;
+
 /*
  * @brief Creates an array of tokens from an input line.
  *
@@ -30,8 +32,6 @@ t_token	**make_tokens(char *line)
 	const char	*current_pos;
 	int			ret;
 
-	// Overallocate to simplify initial allocation; a more precise count
-	// would require a first pass. Max possible tokens is strlen(line).
 	tokens = malloc(sizeof(t_token *) * (ft_strlen(line) + 1));
 	if (!tokens)
 		return (perror("minishell: malloc failed for tokens array"), NULL);
@@ -43,48 +43,88 @@ t_token	**make_tokens(char *line)
 		if (*current_pos == '\0')
 			break ;
 		ret = handle_token_type(&current_pos, &tokens, &token_idx);
-		if (ret == 0 || ret == -1) // 0 for malloc fail, -1 for unexpected char
+		if (ret == 0 || ret == -1)
 			return (free_tokens_array(tokens), NULL);
 	}
-	tokens[token_idx] = NULL; // Null-terminate the array of token pointers
+	tokens[token_idx] = NULL;
 	return (tokens);
+}
+
+/*
+ * @brief Executes a pipeline of commands.
+ */
+static void	execute_tokens(t_token **tokens, t_shell *shell)
+{
+	t_simple_cmd	**pipeline;
+	t_simple_cmd	*cmd;
+	int				status;
+
+	if (count_pipes(tokens) > 0)
+	{
+		pipeline = split_by_pipes(tokens);
+		if (pipeline)
+		{
+			status = execute_pipeline_shell(pipeline, shell);
+			shell->last_exit_status = status;
+			free_pipeline(pipeline);
+		}
+	}
+	else
+	{
+		cmd = parse_simple_command_shell(tokens, shell);
+		if (cmd)
+		{
+			status = execute_simple_command_shell(cmd, shell);
+			shell->last_exit_status = status;
+			free_simple_cmd(cmd);
+		}
+	}
+}
+
+/*
+ * @brief Processes a single line of input.
+ *
+ * This function tokenizes the input line, parses it into a command,
+ * and executes it if valid.
+ *
+ * @param line The input line to process.
+ */
+static void	process_line(char *line, t_shell *shell)
+{
+	t_token	**tokens;
+
+	tokens = make_tokens(line);
+	if (tokens)
+	{
+		add_history(line);
+		execute_tokens(tokens, shell);
+		free_tokens_array(tokens);
+	}
 }
 
 int	main(void)
 {
-	char			*line;
-	char			*prompt;
-	t_token			**tokens;
-	t_simple_cmd	*cmd;
+	char		*line;
+	char		*prompt;
+	t_shell		shell;
+	extern char	**environ;
 
+	shell.env = environ;
+	shell.last_exit_status = 0;
 	prompt = "\033[1;36mMiniShell\033[0m\033[1;31m> \033[0m";
-	signal(SIGINT, handle_C);
+	setup_signals();
 	while (1)
 	{
 		line = readline(prompt);
 		if (!line)
 		{
-			shutdown_seq();
+			handle_eof_shell(&shell);
 			break ;
 		}
 		if (*line)
-		{
-			add_history(line);
-			tokens = make_tokens(line);
-			if (tokens)
-			{
-				cmd = parse_simple_command(tokens);
-				if (cmd)
-				{
-					execute_simple_command(cmd);
-					free_simple_cmd(cmd);
-				}
-				free_tokens_array(tokens);
-			}
-		}
+			process_line(line, &shell);
 		free(line);
 	}
 	clear_history();
 	return (0);
 }
-

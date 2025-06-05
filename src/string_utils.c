@@ -3,21 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: minishell <minishell@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 15:16:15 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/26 15:48:42 by tde-raev         ###   ########.fr       */
+/*   Created: 2025/05/31 02:00:00 by minishell         #+#    #+#             */
+/*   Updated: 2025/05/31 02:00:00 by minishell        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h" // Includes your minishell.h
+#include "minishell.h"
 
+/*
+ * @brief Joins two strings and frees the first one.
+ */
 char	*ft_strjoin_free(char *s1, char const *s2)
 {
 	char	*result;
 
+	if (!s1 || !s2)
+		return (NULL);
 	result = ft_strjoin(s1, s2);
 	free(s1);
 	return (result);
 }
-

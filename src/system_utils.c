@@ -10,10 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h" // Includes your minishell.h
-
-// Global variable for signal handling (as required by subject)
-volatile sig_atomic_t g_signal_received = 0;
+#include "minishell.h"
 
 /*
  * @brief Displays a shutdown sequence with a fading effect.
@@ -36,13 +33,13 @@ void	shutdown_seq(void)
 		intensity = 255 - (i * (255 / len));
 		if (intensity < 0)
 			intensity = 0;
-		printf("\033[38;2;%d;%d;%dm%c\033[0m",
+		fprintf(stderr, "\033[38;2;%d;%d;%dm%c\033[0m",
 			intensity, intensity, intensity, farewell[i]);
-		fflush(stdout);
-		usleep(100000); // 100 milliseconds
+		fflush(stderr);
+		usleep(100000);
 		i++;
 	}
-	printf("\n");
+	fprintf(stderr, "\n");
 }
 
 /*
@@ -53,7 +50,7 @@ void	shutdown_seq(void)
  *
  * @param signo The signal number (SIGINT).
  */
-void	handle_C(int signo)
+void	handle_sigint(int signo)
 {
 	g_signal_received = signo;
 	printf("\n");
@@ -68,11 +65,29 @@ void	handle_C(int signo)
  */
 void	do_pwd(void)
 {
-	char	cwd[1024]; // Buffer for current working directory
+	char	cwd[1024];
 
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		printf("%s\n", cwd);
 	else
-		perror("getcwd error"); // Print system error if getcwd fails
+		perror("getcwd error");
 }
 
+/*
+ * @brief Counts the number of pipes in the token array.
+ */
+int	count_pipes(t_token **tokens)
+{
+	int	count;
+	int	i;
+
+	count = 0;
+	i = 0;
+	while (tokens[i])
+	{
+		if (tokens[i]->type == PIPE)
+			count++;
+		i++;
+	}
+	return (count);
+}

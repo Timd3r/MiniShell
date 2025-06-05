@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h" // Includes your minishell.h for t_token and types
+#include "minishell.h"
 
 /*
  * @brief Creates a new t_token structure.
@@ -36,7 +36,7 @@ t_token	*new_token(t_token_type type, char *value)
 		return (NULL);
 	}
 	token->type = type;
-	token->c = value; // Assign the duplicated string
+	token->c = value;
 	return (token);
 }
 
@@ -74,12 +74,14 @@ int	get_word_len(const char *str)
 		i++;
 		while (str[i] != '"')
 			i++;
+		i++;
 	}
 	else if (str[i] == '\'')
 	{
 		i++;
 		while (str[i] != '\'')
 			i++;
+		i++;
 	}
 	else
 	{
@@ -109,66 +111,9 @@ void	free_tokens_array(t_token **tokens)
 	i = 0;
 	while (tokens[i])
 	{
-		free(tokens[i]->c); // Free the string value
-		free(tokens[i]);    // Free the token structure
+		free(tokens[i]->c);
+		free(tokens[i]);
 		i++;
 	}
-	free(tokens); // Free the array of pointers itself
-}
-
-/*
- * @brief Prints the type and value of each token in a NULL-terminated array.
- *
- * This is a utility function for debugging the output of the lexer.
- * It iterates through the array of t_token pointers and prints information
- * about each token found until the NULL terminator.
- *
- * @param tokens The NULL-terminated array of t_token pointers.
- */
-void print_tokens(t_token **tokens)
-{
-    int i;
-
-    if (!tokens)
-    {
-        printf("Tokens array is NULL.\n");
-        return ;
-    }
-
-    i = 0;
-    printf("--- Tokens ---\n");
-    while (tokens[i] != NULL) // Iterate until the NULL terminator [4, 7]
-    {
-        printf("Token %d: Type=", i);
-        // Print the token type as a readable string based on the enum [1, 2]
-        switch (tokens[i]->type)
-        {
-            case WORD:
-                printf("WORD");
-                break;
-            case PIPE:
-                printf("PIPE");
-                break;
-            case IN:
-                printf("IN");
-                break;
-            case OUT:
-                printf("OUT");
-                break;
-            case APPEND:
-                printf("APPEND");
-                break;
-            case HEREDOC:
-                printf("HEREDOC");
-                break;
-            // Add cases for any other token types you define
-            default:
-                printf("UNKNOWN");
-                break;
-        }
-        // Print the token's string value [1, 2]
-        printf(", Value=\"%s\"\n", tokens[i]->c);
-        i++;
-    }
-    printf("--------------\n");
+	free(tokens);
 }
