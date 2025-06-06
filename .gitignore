@@ -1,0 +1,18 @@
+# Object files
+*.o
+
+# Libraries
+*.a
+
+# Executables
+minishell
+
+# Build directory
+obj/
+
+# MacOS specific
+.DS_Store
+
+# Editor specific
+.vscode/
+.idea/ 
