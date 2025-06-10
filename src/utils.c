@@ -42,3 +42,27 @@ int	is_builtin(char *cmd)
 		return (1);
 	return (0);
 }
+
+int	is_operator(t_token *token)
+{
+	return (token && (token->type == PIPE || token->type == IN
+			|| token->type == OUT || token->type == APPEND
+			|| token->type == HEREDOC));
+}
+
+int	is_valid_identifier(const char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str || (!ft_isalpha(str[i]) && str[i] != '_'))
+		return (0);
+	i++;
+	while (str[i])
+	{
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}

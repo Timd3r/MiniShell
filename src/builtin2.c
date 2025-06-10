@@ -77,6 +77,7 @@ static int	process_export_arg(char *arg)
 {
 	char	*eq_pos;
 	char	*name;
+	char	*value;
 
 	eq_pos = ft_strchr(arg, '=');
 	if (!eq_pos)
@@ -84,7 +85,13 @@ static int	process_export_arg(char *arg)
 	name = ft_substr(arg, 0, eq_pos - arg);
 	if (!name)
 		return (1);
-	if (setenv(name, eq_pos + 1, 1) == -1)
+	if (!validate_export_name(name, arg))
+	{
+		free(name);
+		return (1);
+	}
+	value = eq_pos + 1;
+	if (setenv(name, value, 1) == -1)
 	{
 		free(name);
 		return (1);

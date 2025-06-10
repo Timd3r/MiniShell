@@ -43,21 +43,6 @@ void	shutdown_seq(void)
 }
 
 /*
- * @brief Signal handler for SIGINT (Ctrl+C).
- *
- * This function handles the SIGINT signal by printing a newline,
- * clearing the readline buffer, and moving to a new line.
- *
- * @param signo The signal number (SIGINT).
- */
-void	handle_sigint(int signo)
-{
-	g_signal_received = signo;
-	printf("\n");
-	fflush(stdout);
-}
-
-/*
  * @brief Executes the 'pwd' command.
  *
  * This function prints the current working directory to standard output.

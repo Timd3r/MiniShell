@@ -6,13 +6,13 @@
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:00:38 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/27 15:25:30 by tde-raev         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:47:38 by tde-raev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t		g_signal_received = 0;
+volatile sig_atomic_t	g_signal_received = 0;
 
 /*
  * @brief Creates an array of tokens from an input line.
@@ -102,9 +102,40 @@ static void	process_line(char *line, t_shell *shell)
 	}
 }
 
+/*
+ * @brief Main loop for processing user input.
+ */
+static void	shell_loop(t_shell *shell, char *prompt)
+{
+	char	*line;
+
+	while (1)
+	{
+		g_signal_received = 0;
+		line = readline(prompt);
+		if (!line)
+		{
+			handle_eof_shell(shell);
+			break ;
+		}
+		if (g_signal_received == SIGINT)
+		{
+			shell->last_exit_status = 130;
+			if (line)
+				free(line);
+			continue ;
+		}
+		if (*line)
+		{
+			process_line(line, shell);
+		}
+		if (line)
+			free(line);
+	}
+}
+
 int	main(void)
 {
-	char		*line;
 	char		*prompt;
 	t_shell		shell;
 	extern char	**environ;
@@ -113,18 +144,7 @@ int	main(void)
 	shell.last_exit_status = 0;
 	prompt = "\033[1;36mMiniShell\033[0m\033[1;31m> \033[0m";
 	setup_signals();
-	while (1)
-	{
-		line = readline(prompt);
-		if (!line)
-		{
-			handle_eof_shell(&shell);
-			break ;
-		}
-		if (*line)
-			process_line(line, &shell);
-		free(line);
-	}
+	shell_loop(&shell, prompt);
 	clear_history();
 	return (0);
 }

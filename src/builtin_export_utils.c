@@ -13,6 +13,21 @@
 #include "minishell.h"
 
 /*
+ * @brief Helper to validate and extract export argument components.
+ */
+int	validate_export_name(char *name, char *arg)
+{
+	if (!is_valid_identifier(name))
+	{
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		return (0);
+	}
+	return (1);
+}
+
+/*
  * @brief Prints a single environment variable for export command.
  */
 static void	print_variable_formatted(char *env_var)

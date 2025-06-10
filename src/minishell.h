@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef MINISHELL_H
+#ifndef MINISHELL_H
 # define MINISHELL_H
 
 # include <sys/types.h>
@@ -166,5 +166,10 @@ void			heredoc_child_process(int write_fd, char *delimiter);
 int				open_input_file(t_simple_cmd *cmd);
 int				open_output_file(t_simple_cmd *cmd);
 int				handle_heredoc(char *delimiter);
+int				handle_input_redirection(t_simple_cmd *cmd);
+int				handle_output_redirection(t_simple_cmd *cmd);
+
+int				is_valid_identifier(const char *str);
+int				validate_export_name(char *name, char *arg);
 
 #endif
