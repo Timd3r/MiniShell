@@ -111,18 +111,24 @@ static void	shell_loop(t_shell *shell, char *prompt)
 
 	while (1)
 	{
+		g_signal_received = 0;
 		line = readline(prompt);
 		if (!line)
 		{
 			handle_eof_shell(shell);
 			break ;
 		}
+		if (g_signal_received == SIGINT)
+		{
+			shell->last_exit_status = 130;
+			free(line);
+			continue ;
+		}
 		if (*line)
 		{
 			process_line(line, shell);
 		}
-		if (line)
-			free(line);
+		free(line);
 	}
 }
 

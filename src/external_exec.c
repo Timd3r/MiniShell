@@ -107,11 +107,16 @@ static int	parent_process(pid_t pid, char *executable_path)
 	if (pid > 0)
 	{
 		waitpid(pid, &status, 0);
+		setup_signals();
 		free(executable_path);
 		if (WIFEXITED(status))
 			return (WEXITSTATUS(status));
 		else if (WIFSIGNALED(status))
+		{
+			if (WTERMSIG(status) == SIGINT)
+				write(STDOUT_FILENO, "\n", 1);
 			return (128 + WTERMSIG(status));
+		}
 		return (1);
 	}
 	else
