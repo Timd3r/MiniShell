@@ -79,6 +79,8 @@ static void	child_process(t_simple_cmd *cmd, char *executable_path,
 	extern char	**environ;
 
 	setup_exec_signals();
+	if (handle_redirections(cmd) != 0)
+		exit(1);
 	if (shell && shell->env)
 	{
 		if (execve(executable_path, cmd->args, shell->env) == -1)

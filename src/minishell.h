@@ -168,6 +168,7 @@ int				open_output_file(t_simple_cmd *cmd);
 int				handle_heredoc(char *delimiter);
 int				handle_input_redirection(t_simple_cmd *cmd);
 int				handle_output_redirection(t_simple_cmd *cmd);
+int				handle_redirections(t_simple_cmd *cmd);
 
 int				is_valid_identifier(const char *str);
 int				validate_export_name(char *name, char *arg);

@@ -46,7 +46,7 @@ int	open_output_file(t_simple_cmd *cmd)
 /*
  * @brief Handles file redirections for a command.
  */
-static int	handle_redirections(t_simple_cmd *cmd)
+int	handle_redirections(t_simple_cmd *cmd)
 {
 	int	input_fd;
 	int	output_fd;
@@ -80,10 +80,12 @@ int	execute_simple_command_shell(t_simple_cmd *cmd, t_shell *shell)
 
 	if (!cmd || !cmd->args || !cmd->args[0])
 		return (1);
-	if (handle_redirections(cmd) != 0)
-		return (1);
 	if (is_builtin(cmd->args[0]))
+	{
+		if (handle_redirections(cmd) != 0)
+			return (1);
 		return (execute_builtin_shell(cmd, shell));
+	}
 	executable_path = find_executable_path(cmd->args[0]);
 	if (!executable_path)
 	{
