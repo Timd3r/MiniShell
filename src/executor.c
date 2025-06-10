@@ -71,6 +71,42 @@ int	handle_redirections(t_simple_cmd *cmd)
 }
 
 /*
+ * @brief Executes a built-in command with redirections in a child process.
+ */
+static int	execute_builtin_with_redirect(t_simple_cmd *cmd, t_shell *shell)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		if (handle_redirections(cmd) != 0)
+			exit(1);
+		exit(execute_builtin_shell(cmd, shell));
+	}
+	else if (pid > 0)
+	{
+		waitpid(pid, &status, 0);
+		setup_signals();
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
+		else if (WIFSIGNALED(status))
+		{
+			if (WTERMSIG(status) == SIGINT)
+				write(STDOUT_FILENO, "\n", 1);
+			return (128 + WTERMSIG(status));
+		}
+		return (1);
+	}
+	else
+	{
+		perror("minishell: fork failed");
+		return (1);
+	}
+}
+
+/*
  * @brief Executes a simple command with shell context.
  */
 int	execute_simple_command_shell(t_simple_cmd *cmd, t_shell *shell)
@@ -82,8 +118,10 @@ int	execute_simple_command_shell(t_simple_cmd *cmd, t_shell *shell)
 		return (1);
 	if (is_builtin(cmd->args[0]))
 	{
-		if (handle_redirections(cmd) != 0)
-			return (1);
+		if (cmd->input_file || cmd->output_file)
+		{
+			return (execute_builtin_with_redirect(cmd, shell));
+		}
 		return (execute_builtin_shell(cmd, shell));
 	}
 	executable_path = find_executable_path(cmd->args[0]);
