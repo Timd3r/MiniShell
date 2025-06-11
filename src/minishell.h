@@ -120,8 +120,6 @@ char			*find_executable_path(char *cmd);
 int				execute_external_shell(t_simple_cmd *cmd, char *executable_path,
 					t_shell *shell);
 
-void			print_tokens(t_token **tokens);
-
 /* Pipe handling functions */
 int				count_pipes(t_token **tokens);
 t_simple_cmd	**split_by_pipes(t_token **tokens);
