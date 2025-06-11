@@ -1,0 +1,41 @@
+echo -n -n
+
+
+Command:
+    ls nonexistentfile 2>/dev/null; echo $?
+
+Reason:
+    Output mismatch
+
+Output:
+    MiniShell> ls nonexistentfile 2>/dev/null; echo $?
+MiniShell> exit $?
+
+Expected output:
+    1
+
+
+
+
+Command:
+    cat << EOF
+hello
+world
+EOF
+
+	(exits minishell)
+
+
+
+
+ctrl+C
+
+
+command:
+	echo Hello World >> notExistingFile	
+
+expected:
+	file with "Hello World" in it
+
+output:
+	loop

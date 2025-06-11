@@ -57,7 +57,7 @@ static int	handle_exit_builtin(t_simple_cmd *cmd, t_shell *shell)
 	int	exit_status;
 
 	(void)cmd;
-	printf("exit\n");
+//	printf("exit\n");
 	clear_history();
 	shutdown_seq();
 	if (shell)
