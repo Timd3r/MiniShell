@@ -1,0 +1,95 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_extra.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mikellen <mikellen@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/31 04:30:00 by mikellen          #+#    #+#             */
+/*   Updated: 2025/05/31 04:30:00 by mikellen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+/*
+ * @brief Helper function to process a single export argument.
+ *
+ * @param arg The argument string containing name=value.
+ * @return 0 on success, 1 on failure.
+ */
+static int	process_export_arg(char *arg)
+{
+	char	*eq_pos;
+	char	*name;
+	char	*value;
+
+	eq_pos = ft_strchr(arg, '=');
+	if (!eq_pos)
+		return (0);
+	name = ft_substr(arg, 0, eq_pos - arg);
+	if (!name)
+		return (1);
+	if (!validate_export_name(name, arg))
+	{
+		free(name);
+		return (1);
+	}
+	value = eq_pos + 1;
+	if (setenv(name, value, 1) == -1)
+	{
+		free(name);
+		return (1);
+	}
+	free(name);
+	return (0);
+}
+
+/*
+ * @brief Executes the export built-in command.
+ *
+ * @param cmd The command structure containing export arguments.
+ * @param shell The shell context.
+ * @return 0 on success.
+ */
+int	builtin_export(t_simple_cmd *cmd, t_shell *shell)
+{
+	int	i;
+
+	if (!cmd->args[1])
+	{
+		print_exported_vars(shell);
+		return (0);
+	}
+	i = 1;
+	while (cmd->args[i])
+	{
+		if (process_export_arg(cmd->args[i]) == 1)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+/*
+ * @brief Executes the unset built-in command.
+ *
+ * @param cmd The command structure containing unset arguments.
+ * @param shell The shell context.
+ * @return 0 on success.
+ */
+int	builtin_unset(t_simple_cmd *cmd, t_shell *shell)
+{
+	int	i;
+
+	(void)shell;
+	if (!cmd->args[1])
+		return (0);
+	i = 1;
+	while (cmd->args[i])
+	{
+		unsetenv(cmd->args[i]);
+		i++;
+	}
+	return (0);
+}

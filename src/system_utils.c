@@ -76,3 +76,57 @@ int	count_pipes(t_token **tokens)
 	}
 	return (count);
 }
+
+/*
+ * @brief Duplicates the environment variables.
+ *
+ * Creates a deep copy of the environment array.
+ *
+ * @param envp The environment array to copy.
+ * @return A newly allocated copy of the environment, or NULL on failure.
+ */
+char	**dup_env(char **envp)
+{
+	char	**new_env;
+	int		count;
+	int		i;
+
+	count = 0;
+	while (envp && envp[count])
+		count++;
+	new_env = malloc(sizeof(char *) * (count + 1));
+	if (!new_env)
+		return (NULL);
+	i = 0;
+	while (i < count)
+	{
+		new_env[i] = ft_strdup(envp[i]);
+		if (!new_env[i])
+		{
+			while (--i >= 0)
+				free(new_env[i]);
+			free(new_env);
+			return (NULL);
+		}
+		i++;
+	}
+	new_env[count] = NULL;
+	return (new_env);
+}
+
+/*
+ * @brief Updates PWD and OLDPWD environment variables.
+ *
+ * Should be called after a successful directory change.
+ */
+void	update_pwd_env(void)
+{
+	char	*old_pwd;
+	char	cwd[4096];
+
+	old_pwd = getenv("PWD");
+	if (old_pwd)
+		setenv("OLDPWD", old_pwd, 1);
+	if (getcwd(cwd, sizeof(cwd)))
+		setenv("PWD", cwd, 1);
+}

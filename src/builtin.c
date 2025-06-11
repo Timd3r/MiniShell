@@ -56,14 +56,20 @@ static int	handle_exit_builtin(t_simple_cmd *cmd, t_shell *shell)
 {
 	int	exit_status;
 
-	(void)cmd;
 	printf("exit\n");
 	clear_history();
 	shutdown_seq();
-	if (shell)
+	exit_status = 0;
+	if (cmd->args[1])
+	{
+		exit_status = ft_atoi(cmd->args[1]);
+		if (exit_status < 0)
+			exit_status = 256 + (exit_status % 256);
+		else
+			exit_status = exit_status % 256;
+	}
+	else if (shell)
 		exit_status = shell->last_exit_status;
-	else
-		exit_status = 0;
 	exit(exit_status);
 }
 

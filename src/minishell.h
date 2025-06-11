@@ -173,4 +173,7 @@ int				handle_redirections(t_simple_cmd *cmd);
 int				is_valid_identifier(const char *str);
 int				validate_export_name(char *name, char *arg);
 
+char			**dup_env(char **envp);
+void			update_pwd_env(void);
+
 #endif

@@ -13,61 +13,38 @@
 #include "minishell.h"
 
 /*
- * @brief Helper to open input file.
+ * @brief Handles child process for builtin with redirections.
  */
-int	open_input_file(t_simple_cmd *cmd)
+static void	handle_builtin_child(t_simple_cmd *cmd, t_shell *shell)
 {
-	int	fd;
-
-	if (cmd->is_heredoc)
-		fd = handle_heredoc(cmd->input_file);
-	else
-		fd = open(cmd->input_file, O_RDONLY);
-	if (fd == -1)
-		perror(cmd->input_file);
-	return (fd);
+	if (handle_redirections(cmd) != 0)
+		exit(1);
+	exit(execute_builtin_shell(cmd, shell));
 }
 
 /*
- * @brief Helper to open output file.
+ * @brief Handles parent process after builtin fork.
  */
-int	open_output_file(t_simple_cmd *cmd)
+static int	handle_builtin_parent(pid_t pid)
 {
-	int	flags;
+	int	status;
 
-	flags = O_WRONLY | O_CREAT;
-	if (cmd->append_mode)
-		flags |= O_APPEND;
-	else
-		flags |= O_TRUNC;
-	return (open(cmd->output_file, flags, 0644));
-}
-
-/*
- * @brief Handles file redirections for a command.
- */
-int	handle_redirections(t_simple_cmd *cmd)
-{
-	int	input_fd;
-	int	output_fd;
-
-	if (cmd->input_file)
+	if (pid < 0)
 	{
-		input_fd = open_input_file(cmd);
-		if (input_fd == -1)
-			return (1);
-		dup2(input_fd, STDIN_FILENO);
-		close(input_fd);
+		perror("minishell: fork failed");
+		return (1);
 	}
-	if (cmd->output_file)
+	waitpid(pid, &status, 0);
+	setup_signals();
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
 	{
-		output_fd = open_output_file(cmd);
-		if (output_fd == -1)
-			return (1);
-		dup2(output_fd, STDOUT_FILENO);
-		close(output_fd);
+		if (WTERMSIG(status) == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
+		return (128 + WTERMSIG(status));
 	}
-	return (0);
+	return (1);
 }
 
 /*
@@ -76,34 +53,11 @@ int	handle_redirections(t_simple_cmd *cmd)
 static int	execute_builtin_with_redirect(t_simple_cmd *cmd, t_shell *shell)
 {
 	pid_t	pid;
-	int		status;
 
 	pid = fork();
 	if (pid == 0)
-	{
-		if (handle_redirections(cmd) != 0)
-			exit(1);
-		exit(execute_builtin_shell(cmd, shell));
-	}
-	else if (pid > 0)
-	{
-		waitpid(pid, &status, 0);
-		setup_signals();
-		if (WIFEXITED(status))
-			return (WEXITSTATUS(status));
-		else if (WIFSIGNALED(status))
-		{
-			if (WTERMSIG(status) == SIGINT)
-				write(STDOUT_FILENO, "\n", 1);
-			return (128 + WTERMSIG(status));
-		}
-		return (1);
-	}
-	else
-	{
-		perror("minishell: fork failed");
-		return (1);
-	}
+		handle_builtin_child(cmd, shell);
+	return (handle_builtin_parent(pid));
 }
 
 /*
@@ -119,9 +73,7 @@ int	execute_simple_command_shell(t_simple_cmd *cmd, t_shell *shell)
 	if (is_builtin(cmd->args[0]))
 	{
 		if (cmd->input_file || cmd->output_file)
-		{
 			return (execute_builtin_with_redirect(cmd, shell));
-		}
 		return (execute_builtin_shell(cmd, shell));
 	}
 	executable_path = find_executable_path(cmd->args[0]);

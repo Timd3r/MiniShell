@@ -76,6 +76,7 @@ void	heredoc_child_process(int write_fd, char *delimiter)
 {
 	char	*line;
 
+	signal(SIGINT, SIG_DFL);
 	while (1)
 	{
 		line = readline("> ");
@@ -100,6 +101,7 @@ int	handle_heredoc(char *delimiter)
 {
 	int		pipefd[2];
 	pid_t	pid;
+	int		status;
 
 	if (pipe(pipefd) == -1)
 		return (-1);
@@ -107,6 +109,11 @@ int	handle_heredoc(char *delimiter)
 	if (pid == 0)
 		heredoc_child_process(pipefd[1], delimiter);
 	close(pipefd[1]);
-	wait(NULL);
+	waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status))
+	{
+		close(pipefd[0]);
+		return (-1);
+	}
 	return (pipefd[0]);
 }

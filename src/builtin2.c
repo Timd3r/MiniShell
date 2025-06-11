@@ -13,6 +13,40 @@
 #include "minishell.h"
 
 /*
+ * @brief Helper function to get HOME directory path.
+ *
+ * @return HOME path or NULL on failure.
+ */
+static char	*get_home_path(void)
+{
+	char	*home;
+
+	home = getenv("HOME");
+	if (!home)
+		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+	return (home);
+}
+
+/*
+ * @brief Helper function to get OLDPWD directory path.
+ *
+ * @return OLDPWD path or NULL on failure.
+ */
+static char	*get_oldpwd_path(void)
+{
+	char	*oldpwd;
+
+	oldpwd = getenv("OLDPWD");
+	if (!oldpwd)
+	{
+		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
+		return (NULL);
+	}
+	printf("%s\n", oldpwd);
+	return (oldpwd);
+}
+
+/*
  * @brief Executes the cd built-in command.
  *
  * @param cmd The command structure containing cd arguments.
@@ -21,17 +55,18 @@
 int	builtin_cd(t_simple_cmd *cmd)
 {
 	char	*path;
-	char	*home;
 
 	if (!cmd->args[1])
 	{
-		home = getenv("HOME");
-		if (!home)
-		{
-			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+		path = get_home_path();
+		if (!path)
 			return (1);
-		}
-		path = home;
+	}
+	else if (ft_strcmp(cmd->args[1], "-") == 0)
+	{
+		path = get_oldpwd_path();
+		if (!path)
+			return (1);
 	}
 	else
 		path = cmd->args[1];
@@ -41,6 +76,7 @@ int	builtin_cd(t_simple_cmd *cmd)
 		perror(path);
 		return (1);
 	}
+	update_pwd_env();
 	return (0);
 }
 
@@ -62,88 +98,6 @@ int	builtin_env(t_simple_cmd *cmd, t_shell *shell)
 	while (shell->env[i])
 	{
 		printf("%s\n", shell->env[i]);
-		i++;
-	}
-	return (0);
-}
-
-/*
- * @brief Helper function to process a single export argument.
- *
- * @param arg The argument string containing name=value.
- * @return 0 on success, 1 on failure.
- */
-static int	process_export_arg(char *arg)
-{
-	char	*eq_pos;
-	char	*name;
-	char	*value;
-
-	eq_pos = ft_strchr(arg, '=');
-	if (!eq_pos)
-		return (0);
-	name = ft_substr(arg, 0, eq_pos - arg);
-	if (!name)
-		return (1);
-	if (!validate_export_name(name, arg))
-	{
-		free(name);
-		return (1);
-	}
-	value = eq_pos + 1;
-	if (setenv(name, value, 1) == -1)
-	{
-		free(name);
-		return (1);
-	}
-	free(name);
-	return (0);
-}
-
-/*
- * @brief Executes the export built-in command.
- *
- * @param cmd The command structure containing export arguments.
- * @param shell The shell context.
- * @return 0 on success.
- */
-int	builtin_export(t_simple_cmd *cmd, t_shell *shell)
-{
-	int	i;
-
-	if (!cmd->args[1])
-	{
-		print_exported_vars(shell);
-		return (0);
-	}
-	i = 1;
-	while (cmd->args[i])
-	{
-		if (process_export_arg(cmd->args[i]) == 1)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-/*
- * @brief Executes the unset built-in command.
- *
- * @param cmd The command structure containing unset arguments.
- * @param shell The shell context.
- * @return 0 on success.
- */
-int	builtin_unset(t_simple_cmd *cmd, t_shell *shell)
-{
-	int	i;
-
-	(void)shell;
-	if (!cmd->args[1])
-		return (0);
-	i = 1;
-	while (cmd->args[i])
-	{
-		unsetenv(cmd->args[i]);
 		i++;
 	}
 	return (0);
