@@ -166,5 +166,10 @@ void			heredoc_child_process(int write_fd, char *delimiter);
 int				open_input_file(t_simple_cmd *cmd);
 int				open_output_file(t_simple_cmd *cmd);
 int				handle_heredoc(char *delimiter);
+void			reset_stdin_to_terminal(void);
+
+/* Shell management functions */
+void			initialize_shell(t_shell *shell, char **envp);
+void			cleanup_shell(t_shell *shell);
 
 #endif

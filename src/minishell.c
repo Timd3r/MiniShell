@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
 volatile sig_atomic_t		g_signal_received = 0;
 
@@ -89,42 +91,48 @@ static void	execute_tokens(t_token **tokens, t_shell *shell)
  *
  * @param line The input line to process.
  */
-static void	process_line(char *line, t_shell *shell)
+static void	process_input(char *line, t_shell *shell)
 {
 	t_token	**tokens;
 
 	tokens = make_tokens(line);
 	if (tokens)
 	{
-		add_history(line);
 		execute_tokens(tokens, shell);
 		free_tokens_array(tokens);
 	}
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
-	char		*line;
-	char		*prompt;
-	t_shell		shell;
-	extern char	**environ;
+	t_shell shell;
+	char *line;
+	char	*prompt;
 
-	shell.env = environ;
-	shell.last_exit_status = 0;
+	(void)argc;
+	(void)argv;
+	initialize_shell(&shell, envp);
 	prompt = "\033[1;36mMiniShell\033[0m\033[1;31m> \033[0m";
-	setup_signals();
 	while (1)
 	{
+		// Reset STDIN to the terminal before each prompt
+		reset_stdin_to_terminal();
+
 		line = readline(prompt);
-		if (!line)
+		if (!line) // EOF (Ctrl+D) or error
 		{
-			handle_eof_shell(&shell);
-			break ;
+			shutdown_seq();
+			break;
 		}
-		if (*line)
-			process_line(line, &shell);
+
+		if (*line) // If the line is not empty
+		{
+			add_history(line);
+			process_input(line, &shell);
+		}
 		free(line);
 	}
-	clear_history();
-	return (0);
+
+	cleanup_shell(&shell);
+	return (shell.last_exit_status);
 }

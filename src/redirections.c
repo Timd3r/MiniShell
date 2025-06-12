@@ -11,6 +11,10 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <readline/readline.h>
 
 /*
  * @brief Handles input redirection tokens.
@@ -70,43 +74,35 @@ int	process_redirections(t_simple_cmd *cmd, t_token **tokens, int *i)
 }
 
 /*
- * @brief Helper function for heredoc child process.
- */
-void	heredoc_child_process(int write_fd, char *delimiter)
-{
-	char	*line;
-
-	while (1)
-	{
-		line = readline("> ");
-		if (!line || ft_strcmp(line, delimiter) == 0)
-		{
-			if (line)
-				free(line);
-			break ;
-		}
-		write(write_fd, line, ft_strlen(line));
-		write(write_fd, "\n", 1);
-		free(line);
-	}
-	close(write_fd);
-	exit(0);
-}
-
-/*
  * @brief Handles heredoc input redirection.
+ *
+ * @param delimiter The string that ends the heredoc.
+ * @return File descriptor for reading heredoc content, or -1 on error.
  */
-int	handle_heredoc(char *delimiter)
+int handle_heredoc(char *delimiter)
 {
-	int		pipefd[2];
-	pid_t	pid;
+    int     pipefd[2];
+    char    *line;
 
-	if (pipe(pipefd) == -1)
-		return (-1);
-	pid = fork();
-	if (pid == 0)
-		heredoc_child_process(pipefd[1], delimiter);
-	close(pipefd[1]);
-	wait(NULL);
-	return (pipefd[0]);
+    if (pipe(pipefd) == -1)
+    {
+        perror("minishell: pipe");
+        return (-1);
+    }
+
+    while (1)
+    {
+        line = readline("> ");
+        if (!line || ft_strcmp(line, delimiter) == 0)
+        {
+            free(line);
+            break;
+        }
+        write(pipefd[1], line, ft_strlen(line));
+        write(pipefd[1], "\n", 1);
+        free(line);
+    }
+
+    close(pipefd[1]); // Close the write end of the pipe
+    return (pipefd[0]); // Return the read end of the pipe
 }

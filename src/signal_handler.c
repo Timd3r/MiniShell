@@ -71,7 +71,7 @@ void	handle_eof_shell(t_shell *shell)
 {
 	int	exit_status;
 
-	write(2, "exit\n", 5);
+//	write(2, "exit\n", 5);
 	clear_history();
 	shutdown_seq();
 	if (shell)
