@@ -108,21 +108,29 @@ static void	process_line(char *line, t_shell *shell)
 static void	shell_loop(t_shell *shell, char *prompt)
 {
 	char	*line;
+	int		was_interrupted;
 
+	was_interrupted = 0;
 	while (1)
 	{
+		if (was_interrupted)
+		{
+			shell->last_exit_status = 130;
+			was_interrupted = 0;
+		}
 		g_signal_received = 0;
 		line = readline(prompt);
+		if (g_signal_received == SIGINT)
+		{
+			was_interrupted = 1;
+			if (line)
+				free(line);
+			continue ;
+		}
 		if (!line)
 		{
 			handle_eof_shell(shell);
 			break ;
-		}
-		if (g_signal_received == SIGINT)
-		{
-			shell->last_exit_status = 130;
-			free(line);
-			continue ;
 		}
 		if (*line)
 		{
