@@ -118,12 +118,12 @@ static void	shell_loop(t_shell *shell, char *prompt)
 			handle_eof_shell(shell);
 			break ;
 		}
-		if (g_signal_received == SIGINT)
-		{
-			shell->last_exit_status = 130;
-			free(line);
-			continue ;
-		}
+		// if (g_signal_received == SIGINT)
+		// {
+		// 	shell->last_exit_status = 130;
+		// 	free(line);
+		// 	continue ;
+		// }
 		if (*line)
 		{
 			process_line(line, shell);
