@@ -109,21 +109,18 @@ static void	shell_loop(t_shell *shell, char *prompt)
 {
 	char	*line;
 
-	line = NULL;
 	while (1)
 	{
-		if (line)
-			free(line);
 		g_signal_received = 0;
 		line = readline(prompt);
 		if (g_signal_received == SIGINT)
 		{
 			shell->last_exit_status = 130;
-			if (line)
-			{
-				free(line);
-				line = NULL;
-			}
+			free(line);
+			write(STDOUT_FILENO, "\n", 1);
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();
 			continue ;
 		}
 		if (!line)
@@ -132,11 +129,12 @@ static void	shell_loop(t_shell *shell, char *prompt)
 			break ;
 		}
 		if (*line)
+		{
 			add_history(line);
-		process_line(line, shell);
-	}
-	if (line)
+			process_line(line, shell);
+		}
 		free(line);
+	}
 }
 
 int	main(void)
