@@ -63,6 +63,7 @@ static int	handle_word(const char **current_pos, t_token ***tokens,
 		return (0);
 	}
 	(*current_pos) += word_len;
+	free(word_val);
 	return (1);
 }
 

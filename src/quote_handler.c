@@ -68,12 +68,9 @@ static char	*process_quote_loop(char *str, t_shell *shell)
 
 char	*process_token_quotes(char *str, t_shell *shell)
 {
-	char	*expanded;
-
-	expanded = expand_variables(str, shell);
-	if (!expanded)
+	if (!str)
 		return (NULL);
-
-	free(str);
-	return (expanded);
+	if (!ft_strchr(str, '\'') && !ft_strchr(str, '"'))
+		return (expand_variables(str, shell));
+	return (process_quote_loop(str, shell));
 }
