@@ -50,8 +50,5 @@ fclean: clean
 
 re: fclean all
 
-# Run Valgrind with suppressions for readline leaks on macOS
-valgrind: $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline_leaks.supp ./$(NAME)
 
 .PHONY: all clean fclean re valgrind

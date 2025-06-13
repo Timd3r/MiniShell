@@ -1,0 +1,27 @@
+==92681== Memcheck, a memory error detector
+==92681== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==92681== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==92681== Command: ./minishell
+==92681== 
+[?2004h[1;36mMiniShell[0m[1;31m> [0m
+[?2004l[?2004h[1;36mMiniShell[0m[1;31m> [0m
+[?2004l[?2004h[1;36mMiniShell[0m[1;31m> [0m
+[?2004l[?2004h[1;36mMiniShell[0m[1;31m> [0m[?2004l
+exit
+[38;2;255;255;255mG[0m[38;2;245;245;245mo[0m[38;2;235;235;235mo[0m[38;2;225;225;225md[0m[38;2;215;215;215mb[0m[38;2;205;205;205my[0m[38;2;195;195;195me[0m[38;2;185;185;185m [0m[38;2;175;175;175mf[0m[38;2;165;165;165mr[0m[38;2;155;155;155mo[0m[38;2;145;145;145mm[0m[38;2;135;135;135m [0m[38;2;125;125;125mM[0m[38;2;115;115;115mi[0m[38;2;105;105;105mn[0m[38;2;95;95;95mi[0m[38;2;85;85;85ms[0m[38;2;75;75;75mh[0m[38;2;65;65;65me[0m[38;2;55;55;55ml[0m[38;2;45;45;45ml[0m[38;2;35;35;35m.[0m[38;2;25;25;25m.[0m[38;2;15;15;15m.[0m
+==92681== 
+==92681== HEAP SUMMARY:
+==92681==     in use at exit: 204,209 bytes in 221 blocks
+==92681==   total heap usage: 439 allocs, 218 frees, 227,790 bytes allocated
+==92681== 
+==92681== LEAK SUMMARY:
+==92681==    definitely lost: 0 bytes in 0 blocks
+==92681==    indirectly lost: 0 bytes in 0 blocks
+==92681==      possibly lost: 0 bytes in 0 blocks
+==92681==    still reachable: 204,209 bytes in 221 blocks
+==92681==         suppressed: 0 bytes in 0 blocks
+==92681== Reachable blocks (those to which a pointer was found) are not shown.
+==92681== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==92681== 
+==92681== For lists of detected and suppressed errors, rerun with: -s
+==92681== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
