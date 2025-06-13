@@ -40,6 +40,7 @@ void	setup_signals(void)
 void	handle_sigint_interactive(int sig)
 {
 	(void)sig;
+	write(STDOUT_FILENO, "\n", 1);
 	g_signal_received = SIGINT;
 }
 

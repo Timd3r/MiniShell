@@ -113,24 +113,26 @@ static void	shell_loop(t_shell *shell, char *prompt)
 	{
 		g_signal_received = 0;
 		line = readline(prompt);
+		if (!line)
+		{
+			if (g_signal_received == SIGINT)
+			{
+				shell->last_exit_status = 130;
+				rl_on_new_line();
+				rl_replace_line("", 0);
+				continue ;
+			}
+			handle_eof_shell(shell);
+			break ;
+		}
 		if (g_signal_received == SIGINT)
 		{
 			shell->last_exit_status = 130;
 			free(line);
-			write(STDOUT_FILENO, "\n", 1);
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			rl_redisplay();
 			continue ;
-		}
-		if (!line)
-		{
-			handle_eof_shell(shell);
-			break ;
 		}
 		if (*line)
 		{
-			add_history(line);
 			process_line(line, shell);
 		}
 		free(line);
