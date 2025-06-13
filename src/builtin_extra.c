@@ -12,12 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Helper function to process a single export argument.
- *
- * @param arg The argument string containing name=value.
- * @return 0 on success, 1 on failure.
- */
 static int	process_export_arg(char *arg)
 {
 	char	*eq_pos;
@@ -45,13 +39,6 @@ static int	process_export_arg(char *arg)
 	return (0);
 }
 
-/*
- * @brief Executes the export built-in command.
- *
- * @param cmd The command structure containing export arguments.
- * @param shell The shell context.
- * @return 0 on success.
- */
 int	builtin_export(t_simple_cmd *cmd, t_shell *shell)
 {
 	int	i;
@@ -71,13 +58,6 @@ int	builtin_export(t_simple_cmd *cmd, t_shell *shell)
 	return (0);
 }
 
-/*
- * @brief Executes the unset built-in command.
- *
- * @param cmd The command structure containing unset arguments.
- * @param shell The shell context.
- * @return 0 on success.
- */
 int	builtin_unset(t_simple_cmd *cmd, t_shell *shell)
 {
 	int	i;

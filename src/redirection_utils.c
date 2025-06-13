@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Helper to open input file.
- */
 int	open_input_file(t_simple_cmd *cmd)
 {
 	int	fd;
@@ -28,9 +25,6 @@ int	open_input_file(t_simple_cmd *cmd)
 	return (fd);
 }
 
-/*
- * @brief Helper to open output file.
- */
 int	open_output_file(t_simple_cmd *cmd)
 {
 	int	flags;
@@ -43,9 +37,6 @@ int	open_output_file(t_simple_cmd *cmd)
 	return (open(cmd->output_file, flags, 0644));
 }
 
-/*
- * @brief Handles file redirections for a command.
- */
 int	handle_redirections(t_simple_cmd *cmd)
 {
 	int	input_fd;

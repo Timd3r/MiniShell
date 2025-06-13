@@ -14,17 +14,6 @@
 
 volatile sig_atomic_t	g_signal_received = 0;
 
-/*
- * @brief Creates an array of tokens from an input line.
- *
- * This function parses the input line, identifying words, pipes, and
- * redirection operators, and converts them into an array of t_token
- * structures. The array is NULL-terminated.
- *
- * @param line The input string to be tokenized.
- * @return A NULL-terminated array of t_token pointers, or NULL if
- * memory allocation fails at any point or an unexpected character is found.
-*/
 t_token	**make_tokens(char *line)
 {
 	t_token		**tokens;
@@ -50,9 +39,6 @@ t_token	**make_tokens(char *line)
 	return (tokens);
 }
 
-/*
- * @brief Executes a pipeline of commands.
- */
 static void	execute_tokens(t_token **tokens, t_shell *shell)
 {
 	t_simple_cmd	**pipeline;
@@ -81,14 +67,6 @@ static void	execute_tokens(t_token **tokens, t_shell *shell)
 	}
 }
 
-/*
- * @brief Processes a single line of input.
- *
- * This function tokenizes the input line, parses it into a command,
- * and executes it if valid.
- *
- * @param line The input line to process.
- */
 static void	process_line(char *line, t_shell *shell)
 {
 	t_token	**tokens;
@@ -102,9 +80,6 @@ static void	process_line(char *line, t_shell *shell)
 	}
 }
 
-/*
- * @brief Main loop for processing user input.
- */
 static void	shell_loop(t_shell *shell, char *prompt)
 {
 	char	*line;
@@ -118,12 +93,6 @@ static void	shell_loop(t_shell *shell, char *prompt)
 			handle_eof_shell(shell);
 			break ;
 		}
-		// if (g_signal_received == SIGINT)
-		// {
-		// 	shell->last_exit_status = 130;
-		// 	free(line);
-		// 	continue ;
-		// }
 		if (*line)
 		{
 			process_line(line, shell);

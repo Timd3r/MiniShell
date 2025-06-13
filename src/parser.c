@@ -12,15 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Processes command arguments from tokens.
- *
- * @param cmd The command structure to populate.
- * @param tokens The token array.
- * @param arg_idx Pointer to current argument index.
- * @param i Pointer to current token index.
- * @return 0 on success, -1 on failure.
- */
 static int	process_command_args(t_simple_cmd *cmd, t_token **tokens,
 			int *arg_idx, int *i)
 {
@@ -41,9 +32,6 @@ static int	process_command_args(t_simple_cmd *cmd, t_token **tokens,
 	return (0);
 }
 
-/*
- * @brief Processes quote and variable expansion for command arguments.
- */
 static void	process_arg_expansion(t_simple_cmd *cmd, t_shell *shell)
 {
 	char	*processed_value;
@@ -62,17 +50,6 @@ static void	process_arg_expansion(t_simple_cmd *cmd, t_shell *shell)
 	}
 }
 
-/*
- * @brief Parses tokens into a simple command structure with shell context.
- *
- * This function takes an array of tokens and converts them into a
- * t_simple_cmd structure. It handles basic commands with arguments
- * and simple redirections, with proper quote processing and variable expansion.
- *
- * @param tokens The NULL-terminated array of tokens to parse.
- * @param shell The shell context for variable expansion.
- * @return A pointer to the parsed command, or NULL on failure.
- */
 t_simple_cmd	*parse_simple_command_shell(t_token **tokens, t_shell *shell)
 {
 	t_simple_cmd	*cmd;
@@ -100,9 +77,6 @@ t_simple_cmd	*parse_simple_command_shell(t_token **tokens, t_shell *shell)
 	return (cmd);
 }
 
-/*
- * @brief Legacy wrapper for parse_simple_command.
- */
 t_simple_cmd	*parse_simple_command(t_token **tokens)
 {
 	return (parse_simple_command_shell(tokens, NULL));

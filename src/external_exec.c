@@ -12,13 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Searches for executable in PATH directories.
- *
- * @param cmd The command name.
- * @param paths Array of PATH directories.
- * @return Full path to executable or NULL.
- */
 static char	*search_in_paths(char *cmd, char **paths)
 {
 	char	*full_path;
@@ -43,15 +36,6 @@ static char	*search_in_paths(char *cmd, char **paths)
 	return (NULL);
 }
 
-/*
- * @brief Finds the full path of an executable using PATH environment variable.
- *
- * This function searches for an executable in the directories listed in
- * the PATH environment variable.
- *
- * @param cmd The command name to search for.
- * @return The full path to the executable, or NULL if not found.
- */
 char	*find_executable_path(char *cmd)
 {
 	char	*path_env;
@@ -70,9 +54,6 @@ char	*find_executable_path(char *cmd)
 	return (search_in_paths(cmd, paths));
 }
 
-/*
- * @brief Handles child process execution.
- */
 static void	child_process(t_simple_cmd *cmd, char *executable_path,
 				t_shell *shell)
 {
@@ -99,9 +80,6 @@ static void	child_process(t_simple_cmd *cmd, char *executable_path,
 	}
 }
 
-/*
- * @brief Handles parent process after fork.
- */
 static int	parent_process(pid_t pid, char *executable_path)
 {
 	int	status;
@@ -129,14 +107,6 @@ static int	parent_process(pid_t pid, char *executable_path)
 	}
 }
 
-/*
- * @brief Executes an external command with shell context.
- *
- * @param cmd The command structure.
- * @param executable_path Path to the executable.
- * @param shell The shell context.
- * @return Exit status of the command.
- */
 int	execute_external_shell(t_simple_cmd *cmd, char *executable_path,
 			t_shell *shell)
 {

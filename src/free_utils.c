@@ -12,15 +12,6 @@
 
 #include "minishell.h" // Includes minishell.h for necessary definitions
 
-/*
- * @brief Frees a NULL-terminated array of strings (like those
- * returned by ft_split).
- *
- * Iterates through the array, freeing each string, and then frees the
- * array itself.
- *
- * @param split The NULL-terminated array of strings to free.
- */
 void	ft_free_split(char **split)
 {
 	int	i;

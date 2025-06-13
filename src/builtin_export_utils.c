@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Helper to validate and extract export argument components.
- */
 int	validate_export_name(char *name, char *arg)
 {
 	if (!is_valid_identifier(name))
@@ -27,9 +24,6 @@ int	validate_export_name(char *name, char *arg)
 	return (1);
 }
 
-/*
- * @brief Prints a single environment variable for export command.
- */
 static void	print_variable_formatted(char *env_var)
 {
 	char	*eq_pos;
@@ -49,9 +43,6 @@ static void	print_variable_formatted(char *env_var)
 		printf("declare -x %s\n", env_var);
 }
 
-/*
- * @brief Sorts a string array alphabetically.
- */
 static void	sort_env(char **env_copy, int count)
 {
 	int		i;
@@ -76,9 +67,6 @@ static void	sort_env(char **env_copy, int count)
 	}
 }
 
-/*
- * @brief Prints environment variables for export command.
- */
 void	print_exported_vars(t_shell *shell)
 {
 	int		i;

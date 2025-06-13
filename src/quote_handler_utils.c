@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Helper to extract content from quoted string.
- */
 static char	*extract_quote_content(const char **str, int len)
 {
 	char	*word;
@@ -34,9 +31,6 @@ static char	*extract_quote_content(const char **str, int len)
 	return (word);
 }
 
-/*
- * @brief Handles a quoted word extraction.
- */
 char	*extract_quoted_word(const char **str)
 {
 	char	quote;
@@ -52,9 +46,6 @@ char	*extract_quoted_word(const char **str)
 	return (extract_quote_content(str, len));
 }
 
-/*
- * @brief Handles single quoted strings (no expansion).
- */
 char	*handle_single_quote(char *str, int *i)
 {
 	int		start;
@@ -70,9 +61,6 @@ char	*handle_single_quote(char *str, int *i)
 	return (ft_substr(str, start, len));
 }
 
-/*
- * @brief Handles double quoted strings (with variable expansion).
- */
 char	*handle_double_quote(char *str, int *i, t_shell *shell)
 {
 	char	*content;

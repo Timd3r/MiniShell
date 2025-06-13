@@ -12,11 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Helper function to get HOME directory path.
- *
- * @return HOME path or NULL on failure.
- */
 static char	*get_home_path(void)
 {
 	char	*home;
@@ -27,11 +22,6 @@ static char	*get_home_path(void)
 	return (home);
 }
 
-/*
- * @brief Helper function to get OLDPWD directory path.
- *
- * @return OLDPWD path or NULL on failure.
- */
 static char	*get_oldpwd_path(void)
 {
 	char	*oldpwd;
@@ -46,12 +36,6 @@ static char	*get_oldpwd_path(void)
 	return (oldpwd);
 }
 
-/*
- * @brief Executes the cd built-in command.
- *
- * @param cmd The command structure containing cd arguments.
- * @return 0 on success, 1 on failure.
- */
 int	builtin_cd(t_simple_cmd *cmd)
 {
 	char	*path;
@@ -80,13 +64,6 @@ int	builtin_cd(t_simple_cmd *cmd)
 	return (0);
 }
 
-/*
- * @brief Executes the env built-in command.
- *
- * @param cmd The command structure (unused for env).
- * @param shell The shell context containing environment.
- * @return 0 on success.
- */
 int	builtin_env(t_simple_cmd *cmd, t_shell *shell)
 {
 	int	i;

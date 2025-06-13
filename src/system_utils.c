@@ -12,12 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Displays a shutdown sequence with a fading effect.
- *
- * This function prints "Goodbye from Minishell..." character by character
- * with a fading color effect and a small delay, simulating a shutdown.
- */
 void	shutdown_seq(void)
 {
 	const char	*farewell;
@@ -42,12 +36,6 @@ void	shutdown_seq(void)
 	fprintf(stderr, "\n");
 }
 
-/*
- * @brief Executes the 'pwd' command.
- *
- * This function prints the current working directory to standard output.
- * If getcwd fails, it prints a system error message.
- */
 void	do_pwd(void)
 {
 	char	cwd[1024];
@@ -58,9 +46,6 @@ void	do_pwd(void)
 		perror("getcwd error");
 }
 
-/*
- * @brief Counts the number of pipes in the token array.
- */
 int	count_pipes(t_token **tokens)
 {
 	int	count;
@@ -77,14 +62,6 @@ int	count_pipes(t_token **tokens)
 	return (count);
 }
 
-/*
- * @brief Duplicates the environment variables.
- *
- * Creates a deep copy of the environment array.
- *
- * @param envp The environment array to copy.
- * @return A newly allocated copy of the environment, or NULL on failure.
- */
 char	**dup_env(char **envp)
 {
 	char	**new_env;
@@ -114,11 +91,6 @@ char	**dup_env(char **envp)
 	return (new_env);
 }
 
-/*
- * @brief Updates PWD and OLDPWD environment variables.
- *
- * Should be called after a successful directory change.
- */
 void	update_pwd_env(void)
 {
 	char	*old_pwd;

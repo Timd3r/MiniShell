@@ -12,14 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Handles operator tokens (PIPE, IN, OUT, APPEND, HEREDOC).
- *
- * @param current_pos Pointer to current position in input string.
- * @param tokens Pointer to tokens array.
- * @param token_idx Pointer to current token index.
- * @return 1 if handled, 0 on malloc failure, -1 if not an operator.
- */
 static int	handle_operator(const char **current_pos, t_token ***tokens,
 	int *token_idx)
 {
@@ -45,14 +37,6 @@ static int	handle_operator(const char **current_pos, t_token ***tokens,
 	return (1);
 }
 
-/*
- * @brief Handles the creation of a WORD token.
- *
- * @param current_pos Pointer to current position in input string.
- * @param tokens Pointer to tokens array.
- * @param token_idx Pointer to current token index.
- * @return 1 if handled, 0 on malloc failure, -1 if no word found.
- */
 static int	handle_word(const char **current_pos, t_token ***tokens,
 	int *token_idx)
 {
@@ -82,14 +66,6 @@ static int	handle_word(const char **current_pos, t_token ***tokens,
 	return (1);
 }
 
-/*
- * @brief Determines and handles the next token type.
- *
- * @param current_pos Pointer to current position in input string.
- * @param tokens Pointer to tokens array.
- * @param token_idx Pointer to current token index.
- * @return 1 if handled, 0 on malloc failure, -1 if unknown token.
- */
 int	handle_token_type(const char **current_pos, t_token ***tokens,
 	int *token_idx)
 {

@@ -14,9 +14,6 @@
 #include <readline/history.h>
 #include "minishell.h"
 
-/*
- * @brief Sets up signal handlers for interactive mode.
- */
 void	setup_signals(void)
 {
 	struct sigaction	sa_int;
@@ -34,9 +31,6 @@ void	setup_signals(void)
 	sigaction(SIGQUIT, &sa_quit, NULL);
 }
 
-/*
- * @brief Handle SIGINT in interactive mode.
- */
 void	handle_sigint_interactive(int sig)
 {
 	(void)sig;
@@ -47,9 +41,6 @@ void	handle_sigint_interactive(int sig)
 	rl_redisplay();
 }
 
-/*
- * @brief Sets up signal handlers for execution mode.
- */
 void	setup_exec_signals(void)
 {
 	struct sigaction	sa_int;
@@ -67,9 +58,6 @@ void	setup_exec_signals(void)
 	sigaction(SIGQUIT, &sa_quit, NULL);
 }
 
-/*
- * @brief Handle EOF (Ctrl-D) with shell context.
- */
 void	handle_eof_shell(t_shell *shell)
 {
 	int	exit_status;
@@ -84,9 +72,6 @@ void	handle_eof_shell(t_shell *shell)
 	exit(exit_status);
 }
 
-/*
- * @brief Legacy EOF handler.
- */
 void	handle_eof(void)
 {
 	handle_eof_shell(NULL);

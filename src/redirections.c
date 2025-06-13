@@ -12,14 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Handles input redirection tokens.
- *
- * @param cmd The command structure to update.
- * @param tokens The token array.
- * @param i Pointer to current token index.
- * @return 1 if redirection was handled, 0 otherwise.
- */
 int	handle_input_redir(t_simple_cmd *cmd, t_token **tokens, int *i)
 {
 	if (tokens[*i + 1] && tokens[*i + 1]->type == WORD)
@@ -32,14 +24,6 @@ int	handle_input_redir(t_simple_cmd *cmd, t_token **tokens, int *i)
 	return (0);
 }
 
-/*
- * @brief Handles output redirection tokens.
- *
- * @param cmd The command structure to update.
- * @param tokens The token array.
- * @param i Pointer to current token index.
- * @return 1 if redirection was handled, 0 otherwise.
- */
 int	handle_output_redir(t_simple_cmd *cmd, t_token **tokens, int *i)
 {
 	if (tokens[*i + 1] && tokens[*i + 1]->type == WORD)
@@ -52,14 +36,6 @@ int	handle_output_redir(t_simple_cmd *cmd, t_token **tokens, int *i)
 	return (0);
 }
 
-/*
- * @brief Processes redirection tokens.
- *
- * @param cmd The command structure to update.
- * @param tokens The token array.
- * @param i Pointer to current token index.
- * @return 1 if redirection was processed, 0 otherwise.
- */
 int	process_redirections(t_simple_cmd *cmd, t_token **tokens, int *i)
 {
 	if (tokens[*i]->type == IN || tokens[*i]->type == HEREDOC)
@@ -69,9 +45,6 @@ int	process_redirections(t_simple_cmd *cmd, t_token **tokens, int *i)
 	return (0);
 }
 
-/*
- * @brief Helper function for heredoc child process.
- */
 void	heredoc_child_process(int write_fd, char *delimiter)
 {
 	char	*line;
@@ -94,9 +67,6 @@ void	heredoc_child_process(int write_fd, char *delimiter)
 	exit(0);
 }
 
-/*
- * @brief Handles heredoc input redirection.
- */
 int	handle_heredoc(char *delimiter)
 {
 	int		pipefd[2];

@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Handles child process for builtin with redirections.
- */
 static void	handle_builtin_child(t_simple_cmd *cmd, t_shell *shell)
 {
 	if (handle_redirections(cmd) != 0)
@@ -22,9 +19,6 @@ static void	handle_builtin_child(t_simple_cmd *cmd, t_shell *shell)
 	exit(execute_builtin_shell(cmd, shell));
 }
 
-/*
- * @brief Handles parent process after builtin fork.
- */
 static int	handle_builtin_parent(pid_t pid)
 {
 	int	status;
@@ -47,9 +41,6 @@ static int	handle_builtin_parent(pid_t pid)
 	return (1);
 }
 
-/*
- * @brief Executes a built-in command with redirections in a child process.
- */
 static int	execute_builtin_with_redirect(t_simple_cmd *cmd, t_shell *shell)
 {
 	pid_t	pid;
@@ -60,9 +51,6 @@ static int	execute_builtin_with_redirect(t_simple_cmd *cmd, t_shell *shell)
 	return (handle_builtin_parent(pid));
 }
 
-/*
- * @brief Executes a simple command with shell context.
- */
 int	execute_simple_command_shell(t_simple_cmd *cmd, t_shell *shell)
 {
 	char	*executable_path;
@@ -88,9 +76,6 @@ int	execute_simple_command_shell(t_simple_cmd *cmd, t_shell *shell)
 	return (status);
 }
 
-/*
- * @brief Legacy wrapper for execute_simple_command.
- */
 int	execute_simple_command(t_simple_cmd *cmd)
 {
 	return (execute_simple_command_shell(cmd, NULL));

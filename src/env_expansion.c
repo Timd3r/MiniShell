@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Expands environment variables in a string.
- */
 char	*expand_variables(char *str, t_shell *shell)
 {
 	char	*result;
@@ -44,9 +41,6 @@ char	*expand_variables(char *str, t_shell *shell)
 	return (result);
 }
 
-/*
- * @brief Handles the expansion of a single variable.
- */
 char	*handle_variable_expansion(char *str, int *i, t_shell *shell)
 {
 	char	*var_name;
@@ -74,9 +68,6 @@ char	*handle_variable_expansion(char *str, int *i, t_shell *shell)
 	return (ft_strdup(""));
 }
 
-/*
- * @brief Expands variables in all tokens using shell struct.
- */
 void	expand_tokens_shell(t_token **tokens, t_shell *shell)
 {
 	int		i;
@@ -95,17 +86,11 @@ void	expand_tokens_shell(t_token **tokens, t_shell *shell)
 	}
 }
 
-/*
- * @brief Legacy wrapper for expand_tokens (deprecated).
- */
 void	expand_tokens(t_token **tokens)
 {
 	(void)tokens;
 }
 
-/*
- * @brief Legacy function for updating exit status (deprecated).
- */
 void	update_exit_status(int status)
 {
 	(void)status;

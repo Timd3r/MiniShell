@@ -12,17 +12,11 @@
 
 #include "minishell.h"
 
-/*
- * @brief Checks if a character is a quote.
- */
 int	is_quote(char c)
 {
 	return (c == '\'' || c == '"');
 }
 
-/*
- * @brief Gets the length of a quoted string.
- */
 int	get_quoted_len(const char *str, char quote)
 {
 	int	i;
@@ -35,9 +29,6 @@ int	get_quoted_len(const char *str, char quote)
 	return (-1);
 }
 
-/*
- * @brief Helper function to process unquoted characters.
- */
 static char	*process_unquoted_char(char *str, int *i, t_shell *shell)
 {
 	char	*temp;
@@ -53,9 +44,6 @@ static char	*process_unquoted_char(char *str, int *i, t_shell *shell)
 	return (temp);
 }
 
-/*
- * @brief Helper to process the main character loop.
- */
 static char	*process_quote_loop(char *str, t_shell *shell)
 {
 	char	*result;
@@ -78,9 +66,6 @@ static char	*process_quote_loop(char *str, t_shell *shell)
 	return (result);
 }
 
-/*
- * @brief Processes quotes in a token correctly.
- */
 char	*process_token_quotes(char *str, t_shell *shell)
 {
 	if (!str)
@@ -89,11 +74,3 @@ char	*process_token_quotes(char *str, t_shell *shell)
 		return (expand_variables(str, shell));
 	return (process_quote_loop(str, shell));
 }
-
-/*
- * @brief Handles single quoted strings (no expansion).
- */
-
-/*
- * @brief Handles double quoted strings (with variable expansion).
- */

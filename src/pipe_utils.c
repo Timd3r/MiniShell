@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Closes all pipes.
- */
 void	close_all_pipes(int **pipes, int count)
 {
 	int	i;
@@ -28,9 +25,6 @@ void	close_all_pipes(int **pipes, int count)
 	}
 }
 
-/*
- * @brief Waits for all child processes.
- */
 int	wait_for_children(int count)
 {
 	int	status;
@@ -49,9 +43,6 @@ int	wait_for_children(int count)
 	return (last_status);
 }
 
-/*
- * @brief Frees the pipe array.
- */
 void	free_pipes(int **pipes, int count)
 {
 	int	i;
@@ -65,9 +56,6 @@ void	free_pipes(int **pipes, int count)
 	free(pipes);
 }
 
-/*
- * @brief Frees a pipeline of commands.
- */
 void	free_pipeline(t_simple_cmd **cmds)
 {
 	int	i;
@@ -83,9 +71,6 @@ void	free_pipeline(t_simple_cmd **cmds)
 	free(cmds);
 }
 
-/*
- * @brief Parses a segment of tokens into a command.
- */
 t_simple_cmd	*parse_command_segment(t_token **tokens, int start, int end)
 {
 	t_token			**segment;
@@ -111,7 +96,3 @@ t_simple_cmd	*parse_command_segment(t_token **tokens, int start, int end)
 	free(segment);
 	return (cmd);
 }
-
-/*
- * @brief Helper function to allocate pipeline commands array.
- */

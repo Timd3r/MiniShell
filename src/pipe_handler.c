@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Helper function to allocate pipeline commands array.
- */
 static t_simple_cmd	**allocate_pipeline(int pipe_count)
 {
 	t_simple_cmd	**cmds;
@@ -23,9 +20,6 @@ static t_simple_cmd	**allocate_pipeline(int pipe_count)
 	return (cmds);
 }
 
-/*
- * @brief Helper function to process a single command in pipeline.
- */
 static int	process_pipe_segment(t_token **tokens, t_simple_cmd **cmds,
 				int *idxs, int i)
 {
@@ -42,9 +36,6 @@ static int	process_pipe_segment(t_token **tokens, t_simple_cmd **cmds,
 	return (1);
 }
 
-/*
- * @brief Splits tokens into commands separated by pipes.
- */
 t_simple_cmd	**split_by_pipes(t_token **tokens)
 {
 	t_simple_cmd	**cmds;
@@ -72,9 +63,6 @@ t_simple_cmd	**split_by_pipes(t_token **tokens)
 	return (cmds);
 }
 
-/*
- * @brief Executes a pipeline of commands with shell context.
- */
 int	execute_pipeline_shell(t_simple_cmd **cmds, t_shell *shell)
 {
 	int	cmd_count;
@@ -86,7 +74,3 @@ int	execute_pipeline_shell(t_simple_cmd **cmds, t_shell *shell)
 		return (execute_simple_command_shell(cmds[0], shell));
 	return (execute_pipeline_loop(cmds, shell, cmd_count));
 }
-
-/*
- * @brief Legacy wrapper for execute_pipeline.
- */

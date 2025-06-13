@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Joins two strings and frees the first one.
- */
 char	*ft_strjoin_free(char *s1, char const *s2)
 {
 	char	*result;

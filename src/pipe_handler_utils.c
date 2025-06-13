@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Creates pipes for pipeline execution.
- */
 int	**create_pipes(int count)
 {
 	int	**pipes;
@@ -39,9 +36,6 @@ int	**create_pipes(int count)
 	return (pipes);
 }
 
-/*
- * @brief Executes a command in a pipeline with shell context.
- */
 void	execute_piped_command_shell(t_pipe_cmd_params *params)
 {
 	pid_t	pid;
@@ -58,9 +52,6 @@ void	execute_piped_command_shell(t_pipe_cmd_params *params)
 	}
 }
 
-/*
- * @brief Legacy wrapper for execute_piped_command.
- */
 void	execute_piped_command(t_simple_cmd *cmd, int **pipes, int idx,
 			int total)
 {

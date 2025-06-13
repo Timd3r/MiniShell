@@ -12,12 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Executes the echo built-in command.
- *
- * @param cmd The command structure containing echo arguments.
- * @return 0 on success.
- */
 int	builtin_echo(t_simple_cmd *cmd)
 {
 	int	i;
@@ -41,16 +35,6 @@ int	builtin_echo(t_simple_cmd *cmd)
 		printf("\n");
 	return (0);
 }
-
-/*
- * @brief Checks if a command is a built-in command.
- *
- * This function checks if the given command name matches any of the
- * built-in commands that the shell should handle internally.
- *
- * @param cmd The command name to check.
- * @return 1 if it's a built-in, 0 otherwise.
- */
 
 static int	handle_exit_builtin(t_simple_cmd *cmd, t_shell *shell)
 {
@@ -87,9 +71,6 @@ static int	handle_basic_builtins(t_simple_cmd *cmd)
 	return (-1);
 }
 
-/*
- * @brief Executes a built-in command with shell context.
- */
 int	execute_builtin_shell(t_simple_cmd *cmd, t_shell *shell)
 {
 	int	result;

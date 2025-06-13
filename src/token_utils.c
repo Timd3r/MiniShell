@@ -12,14 +12,6 @@
 
 #include "minishell.h"
 
-/*
- * @brief Handles input redirection operators.
- *
- * @param current_pos Pointer to current position in input string.
- * @param tokens Pointer to tokens array.
- * @param token_idx Pointer to current token index.
- * @return 1 on success, 0 on malloc failure.
- */
 int	handle_input_ops(const char **current_pos, t_token ***tokens,
 	int *token_idx)
 {
@@ -35,14 +27,6 @@ int	handle_input_ops(const char **current_pos, t_token ***tokens,
 	return (1);
 }
 
-/*
- * @brief Handles output redirection operators.
- *
- * @param current_pos Pointer to current position in input string.
- * @param tokens Pointer to tokens array.
- * @param token_idx Pointer to current token index.
- * @return 1 on success, 0 on malloc failure.
- */
 int	handle_output_ops(const char **current_pos, t_token ***tokens,
 	int *token_idx)
 {
@@ -58,13 +42,6 @@ int	handle_output_ops(const char **current_pos, t_token ***tokens,
 	return (1);
 }
 
-/*
- * @brief Handles quoted strings in word tokens.
- *
- * @param current_pos Pointer to current position in input string.
- * @param word_val Buffer to store the word.
- * @param word_len Length of the word.
- */
 void	handle_quoted_word(const char **current_pos, char *word_val,
 	int word_len)
 {
