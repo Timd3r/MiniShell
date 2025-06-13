@@ -40,8 +40,11 @@ void	setup_signals(void)
 void	handle_sigint_interactive(int sig)
 {
 	(void)sig;
-	write(STDOUT_FILENO, "\n", 1);
 	g_signal_received = SIGINT;
+	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 /*

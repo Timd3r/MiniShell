@@ -115,13 +115,6 @@ static void	shell_loop(t_shell *shell, char *prompt)
 		line = readline(prompt);
 		if (!line)
 		{
-			if (g_signal_received == SIGINT)
-			{
-				shell->last_exit_status = 130;
-				rl_on_new_line();
-				rl_replace_line("", 0);
-				continue ;
-			}
 			handle_eof_shell(shell);
 			break ;
 		}
