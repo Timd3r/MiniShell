@@ -6,7 +6,7 @@
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:18:23 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/26 16:36:25 by tde-raev         ###   ########.fr       */
+/*   Updated: 2025/06/17 17:54:21 by mikellen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ static int	handle_word(const char **current_pos, t_token ***tokens,
 		return (0);
 	}
 	(*current_pos) += word_len;
-	free(word_val);
 	return (1);
 }
 
