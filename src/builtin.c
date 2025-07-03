@@ -60,14 +60,11 @@ static int	handle_exit_builtin(t_simple_cmd *cmd, t_shell *shell)
 {
 	int	exit_status;
 
-	printf("exit\n");
 	if (cmd->args[1] && cmd->args[2])
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
-	clear_history();
-	shutdown_seq();
 	exit_status = 0;
 	if (cmd->args[1])
 	{
@@ -76,7 +73,8 @@ static int	handle_exit_builtin(t_simple_cmd *cmd, t_shell *shell)
 			ft_putstr_fd("minishell: exit: ", 2);
 			ft_putstr_fd(cmd->args[1], 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
-			exit(2);
+			shell->last_exit_status = 2;
+			return (-42);
 		}
 		exit_status = ft_atoi(cmd->args[1]);
 		if (exit_status < 0)
@@ -86,7 +84,8 @@ static int	handle_exit_builtin(t_simple_cmd *cmd, t_shell *shell)
 	}
 	else if (shell)
 		exit_status = shell->last_exit_status;
-	exit(exit_status);
+	shell->last_exit_status = exit_status;
+	return (-42);
 }
 
 static int	handle_basic_builtins(t_simple_cmd *cmd)
@@ -119,6 +118,6 @@ int	execute_builtin_shell(t_simple_cmd *cmd, t_shell *shell)
 	else if (!ft_strcmp(cmd->args[0], "unset"))
 		return (builtin_unset(cmd, shell));
 	else if (!ft_strcmp(cmd->args[0], "exit"))
-		handle_exit_builtin(cmd, shell);
+		return (handle_exit_builtin(cmd, shell));
 	return (1);
 }

@@ -14,9 +14,18 @@
 
 static void	handle_builtin_child(t_simple_cmd *cmd, t_shell *shell)
 {
+	int status;
+
 	if (handle_redirections(cmd) != 0)
 		exit(1);
-	exit(execute_builtin_shell(cmd, shell));
+	status = execute_builtin_shell(cmd, shell);
+	if (status == -42)
+	{
+		clear_history();
+		shutdown_seq();
+		exit(shell->last_exit_status);
+	}
+	exit(status);
 }
 
 static int	handle_builtin_parent(pid_t pid)

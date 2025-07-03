@@ -177,4 +177,7 @@ int				validate_export_name(char *name, char *arg);
 char			**dup_env(char **envp);
 void			update_pwd_env(void);
 
+void			cleanup_current_command(t_token **tokens, t_simple_cmd *cmd);
+void			safe_exit_shell(int exit_code, t_token **tokens, t_simple_cmd *cmd);
+
 #endif

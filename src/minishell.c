@@ -39,6 +39,10 @@ static void	execute_single_cmd(t_token **tokens, t_shell *shell)
 	if (cmd)
 	{
 		status = execute_simple_command_shell(cmd, shell);
+		if (status == -42)
+		{
+			safe_exit_shell(shell->last_exit_status, tokens, cmd);
+		}
 		shell->last_exit_status = status;
 		free_simple_cmd(cmd);
 	}

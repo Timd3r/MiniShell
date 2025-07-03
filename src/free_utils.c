@@ -49,3 +49,20 @@ int	wait_for_children(int count)
 	}
 	return (last_status);
 }
+
+void	cleanup_current_command(t_token **tokens, t_simple_cmd *cmd)
+{
+	if (tokens)
+		free_tokens_array(tokens);
+	if (cmd)
+		free_simple_cmd(cmd);
+}
+
+void	safe_exit_shell(int exit_code, t_token **tokens, t_simple_cmd *cmd)
+{
+	printf("exit\n");
+	cleanup_current_command(tokens, cmd);
+	clear_history();
+	shutdown_seq();
+	exit(exit_code);
+}

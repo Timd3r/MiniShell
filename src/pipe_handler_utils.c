@@ -53,6 +53,7 @@ void	execute_piped_command_shell(t_pipe_cmd_params *params)
 static void	handle_child_process(t_pipe_cmd_params *params)
 {
 	char	*executable_path;
+	int		status;
 
 	if (params->idx > 0)
 		dup2(params->pipes[params->idx - 1][0], STDIN_FILENO);
@@ -62,7 +63,16 @@ static void	handle_child_process(t_pipe_cmd_params *params)
 	if (handle_redirections(params->cmd) != 0)
 		exit(1);
 	if (is_builtin(params->cmd->args[0]))
-		exit(execute_builtin_shell(params->cmd, params->shell));
+	{
+		status = execute_builtin_shell(params->cmd, params->shell);
+		if (status == -42)
+		{
+			clear_history();
+			shutdown_seq();
+			exit(params->shell->last_exit_status);
+		}
+		exit(status);
+	}
 	else
 	{
 		executable_path = find_executable_path(params->cmd->args[0]);
