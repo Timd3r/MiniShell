@@ -36,26 +36,6 @@ int	builtin_echo(t_simple_cmd *cmd)
 	return (0);
 }
 
-static int	is_numeric_string(char *str)
-{
-	int	i;
-
-	if (!str || !*str)
-		return (0);
-	i = 0;
-	if (str[i] == '-' || str[i] == '+')
-		i++;
-	if (!str[i])
-		return (0);
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 static int	handle_exit_builtin(t_simple_cmd *cmd, t_shell *shell)
 {
 	int	exit_status;
@@ -68,19 +48,9 @@ static int	handle_exit_builtin(t_simple_cmd *cmd, t_shell *shell)
 	exit_status = 0;
 	if (cmd->args[1])
 	{
-		if (!is_numeric_string(cmd->args[1]))
-		{
-			ft_putstr_fd("minishell: exit: ", 2);
-			ft_putstr_fd(cmd->args[1], 2);
-			ft_putstr_fd(": numeric argument required\n", 2);
-			shell->last_exit_status = 2;
+		if (validate_exit_arg(cmd->args[1], shell) == -42)
 			return (-42);
-		}
-		exit_status = ft_atoi(cmd->args[1]);
-		if (exit_status < 0)
-			exit_status = 256 + (exit_status % 256);
-		else
-			exit_status = exit_status % 256;
+		exit_status = calculate_exit_status(cmd->args[1], shell);
 	}
 	else if (shell)
 		exit_status = shell->last_exit_status;

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 15:28:55 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/21 15:29:04 by tde-raev         ###   ########.fr       */
+/*   Created: 2025/05/31 01:00:00 by tde-raev          #+#    #+#             */
+/*   Updated: 2025/05/31 01:00:00 by tde-raev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,6 @@ void	ft_free_split(char **split)
 void	exit_shell(int exit_code)
 {
 	exit(exit_code);
-}
-
-int	wait_for_children(int count)
-{
-	int	status;
-	int	last_status;
-	int	i;
-
-	last_status = 0;
-	i = 0;
-	while (i < count)
-	{
-		wait(&status);
-		if (i == count - 1)
-			last_status = WEXITSTATUS(status);
-		i++;
-	}
-	return (last_status);
 }
 
 void	cleanup_current_command(t_token **tokens, t_simple_cmd *cmd)

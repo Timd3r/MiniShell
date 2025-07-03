@@ -15,7 +15,6 @@
 extern char	**environ;
 
 static void	handle_child_process(t_pipe_cmd_params *params);
-static void	handle_command_not_found(char *cmd_name);
 
 int	**create_pipes(int count)
 {
@@ -52,9 +51,6 @@ void	execute_piped_command_shell(t_pipe_cmd_params *params)
 
 static void	handle_child_process(t_pipe_cmd_params *params)
 {
-	char	*executable_path;
-	int		status;
-
 	if (params->idx > 0)
 		dup2(params->pipes[params->idx - 1][0], STDIN_FILENO);
 	if (params->idx < params->total - 1)
@@ -63,38 +59,9 @@ static void	handle_child_process(t_pipe_cmd_params *params)
 	if (handle_redirections(params->cmd) != 0)
 		exit(1);
 	if (is_builtin(params->cmd->args[0]))
-	{
-		status = execute_builtin_shell(params->cmd, params->shell);
-		if (status == -42)
-		{
-			clear_history();
-			shutdown_seq();
-			exit(params->shell->last_exit_status);
-		}
-		exit(status);
-	}
+		execute_builtin_in_pipe(params);
 	else
-	{
-		executable_path = find_executable_path(params->cmd->args[0]);
-		if (!executable_path)
-			handle_command_not_found(params->cmd->args[0]);
-		setup_exec_signals();
-		if (params->shell && params->shell->env)
-			execve(executable_path, params->cmd->args, params->shell->env);
-		else
-			execve(executable_path, params->cmd->args, environ);
-		perror("minishell: execve failed");
-		free(executable_path);
-		exit(127);
-	}
-}
-
-static void	handle_command_not_found(char *cmd_name)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd_name, 2);
-	ft_putstr_fd(": command not found\n", 2);
-	exit(127);
+		execute_external_in_pipe(params);
 }
 
 int	execute_pipeline_loop(t_simple_cmd **cmds, t_shell *shell, int cmd_count)

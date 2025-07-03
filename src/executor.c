@@ -14,7 +14,7 @@
 
 static void	handle_builtin_child(t_simple_cmd *cmd, t_shell *shell)
 {
-	int status;
+	int	status;
 
 	if (handle_redirections(cmd) != 0)
 		exit(1);

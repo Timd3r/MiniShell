@@ -132,6 +132,8 @@ int				**create_pipes(int count);
 void			execute_piped_command(t_simple_cmd *cmd, int **pipes, int idx,
 					int total);
 void			execute_piped_command_shell(t_pipe_cmd_params *params);
+void			execute_builtin_in_pipe(t_pipe_cmd_params *params);
+void			execute_external_in_pipe(t_pipe_cmd_params *params);
 int				execute_pipeline_loop(t_simple_cmd **cmds, t_shell *shell,
 					int cmd_count);
 void			close_all_pipes(int **pipes, int count);
@@ -176,8 +178,12 @@ int				validate_export_name(char *name, char *arg);
 
 char			**dup_env(char **envp);
 void			update_pwd_env(void);
+void			handle_command_not_found(char *cmd_name);
 
 void			cleanup_current_command(t_token **tokens, t_simple_cmd *cmd);
-void			safe_exit_shell(int exit_code, t_token **tokens, t_simple_cmd *cmd);
+void			safe_exit_shell(int exit_code, t_token **tokens,
+					t_simple_cmd *cmd);
+int				validate_exit_arg(char *arg, t_shell *shell);
+int				calculate_exit_status(char *arg, t_shell *shell);
 
 #endif

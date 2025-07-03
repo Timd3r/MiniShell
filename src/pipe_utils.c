@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+extern char	**environ;
+
 void	close_all_pipes(int **pipes, int count)
 {
 	int	i;

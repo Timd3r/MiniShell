@@ -5,12 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 16:35:00 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/27 16:35:00 by tde-raev         ###   ########.fr       */
+/*   Created: 2025/05/30 15:45:00 by tde-raev          #+#    #+#             */
+/*   Updated: 2025/05/30 15:45:00 by tde-raev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern char	**environ;
 
 static char	*search_in_paths(char *cmd, char **paths)
 {

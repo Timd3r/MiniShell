@@ -42,3 +42,11 @@ void	handle_readline_input(t_shell *shell, char *line)
 		process_line(line, shell);
 	free(line);
 }
+
+void	handle_command_not_found(char *cmd_name)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd_name, 2);
+	ft_putstr_fd(": command not found\n", 2);
+	exit(127);
+}
