@@ -160,7 +160,9 @@ char			*handle_double_quote(char *str, int *i, t_shell *shell);
 /* Signal handling functions */
 void			setup_signals(void);
 void			handle_sigint_interactive(int sig);
+void			handle_sigint_exec(int sig);
 void			setup_exec_signals(void);
+void			setup_exec_wait_signals(void);
 void			handle_eof(void);
 void			handle_eof_shell(t_shell *shell);
 

@@ -88,6 +88,7 @@ static int	parent_process(pid_t pid, char *executable_path)
 
 	if (pid > 0)
 	{
+		setup_exec_wait_signals();
 		waitpid(pid, &status, 0);
 		setup_signals();
 		free(executable_path);

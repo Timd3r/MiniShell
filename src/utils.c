@@ -64,6 +64,7 @@ int	wait_for_children(int count)
 	int	last_status;
 	int	i;
 
+	setup_exec_wait_signals();
 	last_status = 0;
 	i = 0;
 	while (i < count)
@@ -73,5 +74,6 @@ int	wait_for_children(int count)
 			last_status = WEXITSTATUS(status);
 		i++;
 	}
+	setup_signals();
 	return (last_status);
 }

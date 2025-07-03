@@ -79,7 +79,9 @@ int	handle_heredoc(char *delimiter)
 	if (pid == 0)
 		heredoc_child_process(pipefd[1], delimiter);
 	close(pipefd[1]);
+	setup_exec_wait_signals();
 	waitpid(pid, &status, 0);
+	setup_signals();
 	if (WIFSIGNALED(status))
 	{
 		close(pipefd[0]);

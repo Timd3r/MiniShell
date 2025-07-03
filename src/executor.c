@@ -37,6 +37,7 @@ static int	handle_builtin_parent(pid_t pid)
 		perror("minishell: fork failed");
 		return (1);
 	}
+	setup_exec_wait_signals();
 	waitpid(pid, &status, 0);
 	setup_signals();
 	if (WIFEXITED(status))
