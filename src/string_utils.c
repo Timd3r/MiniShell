@@ -14,11 +14,31 @@
 
 char	*ft_strjoin_free(char *s1, char const *s2)
 {
-	char	*result;
+	char	*joined;
 
 	if (!s1 || !s2)
 		return (NULL);
-	result = ft_strjoin(s1, s2);
+	joined = ft_strjoin(s1, s2);
 	free(s1);
-	return (result);
+	return (joined);
+}
+
+void	process_line(char *line, t_shell *shell)
+{
+	t_token	**tokens;
+
+	tokens = make_tokens(line);
+	if (tokens)
+	{
+		add_history(line);
+		execute_tokens(tokens, shell);
+		free_tokens_array(tokens);
+	}
+}
+
+void	handle_readline_input(t_shell *shell, char *line)
+{
+	if (*line)
+		process_line(line, shell);
+	free(line);
 }

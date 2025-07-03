@@ -75,6 +75,9 @@ typedef struct s_pipe_cmd_params
 int				ft_strcmp(const char *s1, const char *s2);
 char			*ft_strjoin_free(char *s1, char const *s2);
 void			ft_free_split(char **split);
+void			process_line(char *line, t_shell *shell);
+void			handle_readline_input(t_shell *shell, char *line);
+void			execute_tokens(t_token **tokens, t_shell *shell);
 
 void			shutdown_seq(void);
 void			handle_sigint(int signo);

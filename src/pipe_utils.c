@@ -25,24 +25,6 @@ void	close_all_pipes(int **pipes, int count)
 	}
 }
 
-int	wait_for_children(int count)
-{
-	int	status;
-	int	last_status;
-	int	i;
-
-	last_status = 0;
-	i = 0;
-	while (i < count)
-	{
-		wait(&status);
-		if (i == count - 1)
-			last_status = WEXITSTATUS(status);
-		i++;
-	}
-	return (last_status);
-}
-
 void	free_pipes(int **pipes, int count)
 {
 	int	i;
@@ -71,6 +53,19 @@ void	free_pipeline(t_simple_cmd **cmds)
 	free(cmds);
 }
 
+void	execute_piped_command(t_simple_cmd *cmd, int **pipes, int idx,
+			int total)
+{
+	t_pipe_cmd_params	params;
+
+	params.cmd = cmd;
+	params.pipes = pipes;
+	params.idx = idx;
+	params.total = total;
+	params.shell = NULL;
+	execute_piped_command_shell(&params);
+}
+
 t_simple_cmd	*parse_command_segment(t_token **tokens, int start, int end)
 {
 	t_token			**segment;
@@ -85,7 +80,7 @@ t_simple_cmd	*parse_command_segment(t_token **tokens, int start, int end)
 		return (NULL);
 	i = start;
 	j = 0;
-	while (i < end)
+	while (i < end && tokens[i])
 	{
 		segment[j] = tokens[i];
 		i++;

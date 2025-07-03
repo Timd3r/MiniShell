@@ -76,3 +76,28 @@ void	free_tokens_array(t_token **tokens)
 	}
 	free(tokens);
 }
+
+t_token	**make_tokens(char *line)
+{
+	t_token		**tokens;
+	int			token_idx;
+	const char	*current_pos;
+	int			ret;
+
+	tokens = malloc(sizeof(t_token *) * (ft_strlen(line) + 1));
+	if (!tokens)
+		return (perror("minishell: malloc failed for tokens array"), NULL);
+	token_idx = 0;
+	current_pos = line;
+	while (*current_pos)
+	{
+		skip_whitespace(&current_pos);
+		if (*current_pos == '\0')
+			break ;
+		ret = handle_token_type(&current_pos, &tokens, &token_idx);
+		if (ret == 0 || ret == -1)
+			return (free_tokens_array(tokens), NULL);
+	}
+	tokens[token_idx] = NULL;
+	return (tokens);
+}
