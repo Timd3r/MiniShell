@@ -123,6 +123,13 @@ char			*find_executable_path(char *cmd);
 int				execute_external_shell(t_simple_cmd *cmd, char *executable_path,
 					t_shell *shell);
 
+/* CD utility functions */
+char			*get_home_path(void);
+char			*get_oldpwd_path(void);
+char			*expand_tilde_path(char *arg);
+char			*get_target_path(t_simple_cmd *cmd, int *should_free);
+int				change_directory(char *path, int should_free);
+
 /* Pipe handling functions */
 int				count_pipes(t_token **tokens);
 t_simple_cmd	**split_by_pipes(t_token **tokens);

@@ -12,56 +12,15 @@
 
 #include "minishell.h"
 
-static char	*get_home_path(void)
-{
-	char	*home;
-
-	home = getenv("HOME");
-	if (!home)
-		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-	return (home);
-}
-
-static char	*get_oldpwd_path(void)
-{
-	char	*oldpwd;
-
-	oldpwd = getenv("OLDPWD");
-	if (!oldpwd)
-	{
-		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
-		return (NULL);
-	}
-	printf("%s\n", oldpwd);
-	return (oldpwd);
-}
-
 int	builtin_cd(t_simple_cmd *cmd)
 {
 	char	*path;
+	int		should_free;
 
-	if (!cmd->args[1])
-	{
-		path = get_home_path();
-		if (!path)
-			return (1);
-	}
-	else if (ft_strcmp(cmd->args[1], "-") == 0)
-	{
-		path = get_oldpwd_path();
-		if (!path)
-			return (1);
-	}
-	else
-		path = cmd->args[1];
-	if (chdir(path) == -1)
-	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		perror(path);
+	path = get_target_path(cmd, &should_free);
+	if (!path)
 		return (1);
-	}
-	update_pwd_env();
-	return (0);
+	return (change_directory(path, should_free));
 }
 
 int	builtin_env(t_simple_cmd *cmd, t_shell *shell)
