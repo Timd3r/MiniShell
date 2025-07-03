@@ -46,7 +46,9 @@ char	*expand_tilde_path(char *arg)
 	if (arg[1] == '\0')
 	{
 		home = get_home_path();
-		return (home);
+		if (!home)
+			return (NULL);
+		return (ft_strdup(home));
 	}
 	if (arg[1] == '/')
 	{
@@ -72,21 +74,19 @@ char	*get_target_path(t_simple_cmd *cmd, int *should_free)
 		path = get_home_path();
 		if (!path)
 			return (NULL);
+		path = ft_strdup(path);
+		if (!path)
+			return (NULL);
+		*should_free = 1;
+		return (path);
 	}
 	else if (ft_strcmp(cmd->args[1], "-") == 0)
-	{
-		path = get_oldpwd_path();
-		if (!path)
-			return (NULL);
-	}
-	else
-	{
-		path = expand_tilde_path(cmd->args[1]);
-		if (!path)
-			return (NULL);
-		if (path != cmd->args[1])
-			*should_free = 1;
-	}
+		return (get_oldpwd_path());
+	path = expand_tilde_path(cmd->args[1]);
+	if (!path)
+		return (NULL);
+	if (path != cmd->args[1])
+		*should_free = 1;
 	return (path);
 }
 
