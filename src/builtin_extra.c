@@ -12,7 +12,9 @@
 
 #include "minishell.h"
 
-static int	process_export_arg(char *arg)
+extern char	**environ;
+
+static int	process_export_arg(char *arg, t_shell *shell)
 {
 	char	*eq_pos;
 	char	*name;
@@ -35,6 +37,7 @@ static int	process_export_arg(char *arg)
 		free(name);
 		return (1);
 	}
+	shell->env = environ;
 	free(name);
 	return (0);
 }
@@ -51,7 +54,7 @@ int	builtin_export(t_simple_cmd *cmd, t_shell *shell)
 	i = 1;
 	while (cmd->args[i])
 	{
-		if (process_export_arg(cmd->args[i]) == 1)
+		if (process_export_arg(cmd->args[i], shell) == 1)
 			return (1);
 		i++;
 	}
@@ -62,13 +65,13 @@ int	builtin_unset(t_simple_cmd *cmd, t_shell *shell)
 {
 	int	i;
 
-	(void)shell;
 	if (!cmd->args[1])
 		return (0);
 	i = 1;
 	while (cmd->args[i])
 	{
 		unsetenv(cmd->args[i]);
+		shell->env = environ;
 		i++;
 	}
 	return (0);
