@@ -58,8 +58,10 @@ static int	handle_exit_builtin(t_simple_cmd *cmd, t_shell *shell)
 	return (-42);
 }
 
-static int	handle_basic_builtins(t_simple_cmd *cmd)
+int	execute_builtin_shell(t_simple_cmd *cmd, t_shell *shell)
 {
+	if (!cmd || !cmd->args || !cmd->args[0])
+		return (1);
 	if (!ft_strcmp(cmd->args[0], "pwd"))
 	{
 		do_pwd();
@@ -68,20 +70,8 @@ static int	handle_basic_builtins(t_simple_cmd *cmd)
 	else if (!ft_strcmp(cmd->args[0], "echo"))
 		return (builtin_echo(cmd));
 	else if (!ft_strcmp(cmd->args[0], "cd"))
-		return (builtin_cd(cmd));
-	return (-1);
-}
-
-int	execute_builtin_shell(t_simple_cmd *cmd, t_shell *shell)
-{
-	int	result;
-
-	if (!cmd || !cmd->args || !cmd->args[0])
-		return (1);
-	result = handle_basic_builtins(cmd);
-	if (result != -1)
-		return (result);
-	if (!ft_strcmp(cmd->args[0], "env"))
+		return (builtin_cd_shell(cmd, shell));
+	else if (!ft_strcmp(cmd->args[0], "env"))
 		return (builtin_env(cmd, shell));
 	else if (!ft_strcmp(cmd->args[0], "export"))
 		return (builtin_export(cmd, shell));

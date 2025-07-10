@@ -55,6 +55,7 @@ int	builtin_export(t_simple_cmd *cmd, t_shell *shell)
 			return (1);
 		i++;
 	}
+	update_shell_env(shell);
 	return (0);
 }
 
@@ -62,7 +63,6 @@ int	builtin_unset(t_simple_cmd *cmd, t_shell *shell)
 {
 	int	i;
 
-	(void)shell;
 	if (!cmd->args[1])
 		return (0);
 	i = 1;
@@ -71,5 +71,6 @@ int	builtin_unset(t_simple_cmd *cmd, t_shell *shell)
 		unsetenv(cmd->args[i]);
 		i++;
 	}
+	update_shell_env(shell);
 	return (0);
 }

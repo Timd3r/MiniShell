@@ -102,3 +102,12 @@ void	update_pwd_env(void)
 	if (getcwd(cwd, sizeof(cwd)))
 		setenv("PWD", cwd, 1);
 }
+
+void	update_shell_env(t_shell *shell)
+{
+	extern char	**environ;
+
+	if (!shell)
+		return ;
+	shell->env = environ;
+}

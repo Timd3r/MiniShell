@@ -23,6 +23,21 @@ int	builtin_cd(t_simple_cmd *cmd)
 	return (change_directory(path, should_free));
 }
 
+int	builtin_cd_shell(t_simple_cmd *cmd, t_shell *shell)
+{
+	char	*path;
+	int		should_free;
+	int		result;
+
+	path = get_target_path(cmd, &should_free);
+	if (!path)
+		return (1);
+	result = change_directory(path, should_free);
+	if (result == 0)
+		update_shell_env(shell);
+	return (result);
+}
+
 int	builtin_env(t_simple_cmd *cmd, t_shell *shell)
 {
 	int	i;
