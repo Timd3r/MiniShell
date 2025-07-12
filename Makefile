@@ -17,10 +17,9 @@ SRC = src/minishell.c src/lexer_utils.c src/system_utils.c src/string_utils.c \
       src/parser_utils.c src/redirections.c src/redirection_utils.c src/builtin.c \
       src/builtin2.c src/builtin_extra.c src/builtin_export_utils.c \
       src/builtin_cd_utils.c src/external_exec.c src/executor.c src/utils.c \
-      src/pipe_handler.c src/pipe_handler_utils.c src/env_expansion.c \
-      src/quote_handler.c src/quote_handler_utils.c src/signal_handler.c \
-      src/pipe_utils.c src/exit_utils.c src/pipe_exec_utils.c src/eof_handler.c \
-      src/utils2.c src/syntax_validator.c
+      src/pipes.c src/pipes2.c src/pipes3.c src/env_expansion.c src/quote_handler.c src/quote_handler_utils.c \
+      src/signal_handler.c src/exit_utils.c src/eof_handler.c \
+      src/syntax_validator.c
 OBJ = obj
 NAME = minishell
 LIBFT = libft/libft.a

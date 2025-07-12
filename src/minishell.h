@@ -63,22 +63,19 @@ typedef struct s_shell
 	int		last_exit_status;
 }	t_shell;
 
-typedef struct s_pipe_cmd_params
+typedef struct s_pipe_info
 {
-	t_simple_cmd	*cmd;
-	int				**pipes;
-	int				idx;
-	int				total;
-	t_shell			*shell;
-}	t_pipe_cmd_params;
+	int	**pipes;
+	int	idx;
+	int	total;
+}	t_pipe_info;
 
-typedef struct s_pipe_segment_params
+typedef struct s_pipe_data
 {
-	t_token			**tokens;
-	t_simple_cmd	**cmds;
-	int				*idxs;
-	t_shell			*shell;
-}	t_pipe_segment_params;
+	int	cmd_idx;
+	int	start;
+	int	i;
+}	t_pipe_data;
 
 int				ft_strcmp(const char *s1, const char *s2);
 char			*ft_strjoin_free(char *s1, char const *s2);
@@ -145,32 +142,24 @@ int				change_directory(char *path, int should_free);
 
 /* Pipe handling functions */
 int				count_pipes(t_token **tokens);
-t_simple_cmd	**split_by_pipes(t_token **tokens);
-t_simple_cmd	**split_by_pipes_shell(t_token **tokens, t_shell *shell);
-int				execute_pipeline(t_simple_cmd **cmds);
-int				execute_pipeline_shell(t_simple_cmd **cmds, t_shell *shell);
 int				**create_pipes(int count);
-void			execute_piped_command(t_simple_cmd *cmd, int **pipes, int idx,
-					int total);
-t_simple_cmd	**setup_pipe_params(t_token **tokens, t_shell *shell,
-					t_pipe_segment_params *params, int *idxs);
-int				process_pipe_tokens(t_token **tokens,
-					t_pipe_segment_params *params);
-int				process_pipe_segment_shell(t_pipe_segment_params *params,
-					int i);
-t_simple_cmd	**allocate_pipeline(int pipe_count);
-void			execute_piped_command_shell(t_pipe_cmd_params *params);
-void			execute_builtin_in_pipe(t_pipe_cmd_params *params);
-void			execute_external_in_pipe(t_pipe_cmd_params *params);
-int				execute_pipeline_loop(t_simple_cmd **cmds, t_shell *shell,
-					int cmd_count);
 void			close_all_pipes(int **pipes, int count);
-int				wait_for_children(int count);
-void			free_pipes(int **pipes, int count);
 void			free_pipeline(t_simple_cmd **cmds);
-t_simple_cmd	*parse_command_segment(t_token **tokens, int start, int end);
-t_simple_cmd	*parse_command_segment_shell(t_token **tokens, int start,
+void			cleanup_pipes(int **pipes, int count);
+t_simple_cmd	**split_by_pipes_shell(t_token **tokens, t_shell *shell);
+
+t_simple_cmd	**split_pipeline(t_token **tokens, t_shell *shell);
+void			execute_pipe_cmd(t_simple_cmd *cmd, t_pipe_info *info,
+					t_shell *shell);
+int				execute_pipeline_shell(t_simple_cmd **cmds, t_shell *shell);
+t_simple_cmd	*parse_segment_with_shell(t_token **tokens, int start,
 					int end, t_shell *shell);
+int				handle_pipe_processing(t_simple_cmd **cmds, t_token **tokens,
+					t_pipe_data *data, t_shell *shell);
+int				handle_end_processing(t_simple_cmd **cmds, t_token **tokens,
+					t_pipe_data *data, t_shell *shell);
+t_simple_cmd	**allocate_and_init_pipeline(t_token **tokens);
+int				wait_for_children(int count);
 
 /* Environment expansion functions */
 char			*expand_variables(char *str, t_shell *shell);
