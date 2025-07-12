@@ -133,6 +133,7 @@ int				change_directory(char *path, int should_free);
 /* Pipe handling functions */
 int				count_pipes(t_token **tokens);
 t_simple_cmd	**split_by_pipes(t_token **tokens);
+t_simple_cmd	**split_by_pipes_shell(t_token **tokens, t_shell *shell);
 int				execute_pipeline(t_simple_cmd **cmds);
 int				execute_pipeline_shell(t_simple_cmd **cmds, t_shell *shell);
 int				**create_pipes(int count);
@@ -148,6 +149,7 @@ int				wait_for_children(int count);
 void			free_pipes(int **pipes, int count);
 void			free_pipeline(t_simple_cmd **cmds);
 t_simple_cmd	*parse_command_segment(t_token **tokens, int start, int end);
+t_simple_cmd	*parse_command_segment_shell(t_token **tokens, int start, int end, t_shell *shell);
 
 /* Environment expansion functions */
 char			*expand_variables(char *str, t_shell *shell);

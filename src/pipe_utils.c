@@ -93,3 +93,29 @@ t_simple_cmd	*parse_command_segment(t_token **tokens, int start, int end)
 	free(segment);
 	return (cmd);
 }
+
+t_simple_cmd	*parse_command_segment_shell(t_token **tokens, int start, int end, t_shell *shell)
+{
+	t_token			**segment;
+	t_simple_cmd	*cmd;
+	int				i;
+	int				j;
+
+	if (end <= start)
+		return (NULL);
+	segment = malloc(sizeof(t_token *) * (end - start + 1));
+	if (!segment)
+		return (NULL);
+	i = start;
+	j = 0;
+	while (i < end && tokens[i])
+	{
+		segment[j] = tokens[i];
+		i++;
+		j++;
+	}
+	segment[j] = NULL;
+	cmd = parse_simple_command_shell(segment, shell);
+	free(segment);
+	return (cmd);
+}

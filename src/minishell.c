@@ -19,7 +19,7 @@ static void	execute_pipes(t_token **tokens, t_shell *shell)
 	t_simple_cmd	**pipeline;
 	int				status;
 
-	pipeline = split_by_pipes(tokens);
+	pipeline = split_by_pipes_shell(tokens, shell);
 	if (pipeline)
 	{
 		status = execute_pipeline_shell(pipeline, shell);
