@@ -97,6 +97,7 @@ t_token			*new_token(t_token_type type, char *value);
 void			skip_whitespace(const char **str);
 int				get_word_len(const char *str);
 void			free_tokens_array(t_token **tokens);
+int				validate_token_syntax(t_token **tokens);
 
 int				handle_token_type(const char **current_pos, t_token ***tokens,
 					int *token_idx);

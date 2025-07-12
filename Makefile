@@ -20,7 +20,7 @@ SRC = src/minishell.c src/lexer_utils.c src/system_utils.c src/string_utils.c \
       src/pipe_handler.c src/pipe_handler_utils.c src/env_expansion.c \
       src/quote_handler.c src/quote_handler_utils.c src/signal_handler.c \
       src/pipe_utils.c src/exit_utils.c src/pipe_exec_utils.c src/eof_handler.c \
-      src/utils2.c
+      src/utils2.c src/syntax_validator.c
 OBJ = obj
 NAME = minishell
 LIBFT = libft/libft.a

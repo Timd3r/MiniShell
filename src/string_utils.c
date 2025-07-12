@@ -30,8 +30,15 @@ void	process_line(char *line, t_shell *shell)
 	tokens = make_tokens(line);
 	if (tokens)
 	{
-		add_history(line);
-		execute_tokens(tokens, shell);
+		if (validate_token_syntax(tokens))
+		{
+			add_history(line);
+			execute_tokens(tokens, shell);
+		}
+		else
+		{
+			shell->last_exit_status = 2;
+		}
 		free_tokens_array(tokens);
 	}
 }
