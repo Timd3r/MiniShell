@@ -47,3 +47,23 @@ void	handle_quoted_word(const char **current_pos, char *word_val,
 {
 	ft_strlcpy(word_val, *current_pos, word_len + 1);
 }
+
+int	skip_double_quote(const char *str, int i)
+{
+	i++;
+	while (str[i] && str[i] != '"')
+		i++;
+	if (str[i] == '"')
+		i++;
+	return (i);
+}
+
+int	skip_single_quote(const char *str, int i)
+{
+	i++;
+	while (str[i] && str[i] != '\'')
+		i++;
+	if (str[i] == '\'')
+		i++;
+	return (i);
+}

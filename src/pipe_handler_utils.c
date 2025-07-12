@@ -90,3 +90,15 @@ int	execute_pipeline_loop(t_simple_cmd **cmds, t_shell *shell, int cmd_count)
 	free_pipes(pipes, cmd_count - 1);
 	return (status);
 }
+
+int	execute_pipeline_shell(t_simple_cmd **cmds, t_shell *shell)
+{
+	int	cmd_count;
+
+	cmd_count = 0;
+	while (cmds[cmd_count])
+		cmd_count++;
+	if (cmd_count == 1)
+		return (execute_simple_command_shell(cmds[0], shell));
+	return (execute_pipeline_loop(cmds, shell, cmd_count));
+}

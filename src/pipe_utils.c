@@ -55,19 +55,6 @@ void	free_pipeline(t_simple_cmd **cmds)
 	free(cmds);
 }
 
-void	execute_piped_command(t_simple_cmd *cmd, int **pipes, int idx,
-			int total)
-{
-	t_pipe_cmd_params	params;
-
-	params.cmd = cmd;
-	params.pipes = pipes;
-	params.idx = idx;
-	params.total = total;
-	params.shell = NULL;
-	execute_piped_command_shell(&params);
-}
-
 t_simple_cmd	*parse_command_segment(t_token **tokens, int start, int end)
 {
 	t_token			**segment;
@@ -94,7 +81,8 @@ t_simple_cmd	*parse_command_segment(t_token **tokens, int start, int end)
 	return (cmd);
 }
 
-t_simple_cmd	*parse_command_segment_shell(t_token **tokens, int start, int end, t_shell *shell)
+t_simple_cmd	*parse_command_segment_shell(t_token **tokens, int start,
+		int end, t_shell *shell)
 {
 	t_token			**segment;
 	t_simple_cmd	*cmd;

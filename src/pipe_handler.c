@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static t_simple_cmd	**allocate_pipeline(int pipe_count)
+t_simple_cmd	**allocate_pipeline(int pipe_count)
 {
 	t_simple_cmd	**cmds;
 
@@ -26,22 +26,6 @@ static int	process_pipe_segment(t_token **tokens, t_simple_cmd **cmds,
 	if (!tokens[i + 1])
 		i++;
 	cmds[idxs[0]] = parse_command_segment(tokens, idxs[1], i);
-	if (!cmds[idxs[0]])
-	{
-		free_pipeline(cmds);
-		return (0);
-	}
-	idxs[0]++;
-	idxs[1] = i + 1;
-	return (1);
-}
-
-static int	process_pipe_segment_shell(t_token **tokens, t_simple_cmd **cmds,
-				int *idxs, int i, t_shell *shell)
-{
-	if (!tokens[i + 1])
-		i++;
-	cmds[idxs[0]] = parse_command_segment_shell(tokens, idxs[1], i, shell);
 	if (!cmds[idxs[0]])
 	{
 		free_pipeline(cmds);
@@ -81,39 +65,15 @@ t_simple_cmd	**split_by_pipes(t_token **tokens)
 
 t_simple_cmd	**split_by_pipes_shell(t_token **tokens, t_shell *shell)
 {
-	t_simple_cmd	**cmds;
-	int				pipe_count;
-	int				idxs[2];
-	int				i;
+	t_simple_cmd			**cmds;
+	int						idxs[2];
+	t_pipe_segment_params	params;
 
-	pipe_count = count_pipes(tokens);
-	cmds = allocate_pipeline(pipe_count);
+	cmds = setup_pipe_params(tokens, shell, &params, idxs);
 	if (!cmds)
 		return (NULL);
-	idxs[0] = 0;
-	idxs[1] = 0;
-	i = 0;
-	while (tokens[i])
-	{
-		if (tokens[i]->type == PIPE || !tokens[i + 1])
-		{
-			if (!process_pipe_segment_shell(tokens, cmds, idxs, i, shell))
-				return (NULL);
-		}
-		i++;
-	}
+	if (!process_pipe_tokens(tokens, &params))
+		return (NULL);
 	cmds[idxs[0]] = NULL;
 	return (cmds);
-}
-
-int	execute_pipeline_shell(t_simple_cmd **cmds, t_shell *shell)
-{
-	int	cmd_count;
-
-	cmd_count = 0;
-	while (cmds[cmd_count])
-		cmd_count++;
-	if (cmd_count == 1)
-		return (execute_simple_command_shell(cmds[0], shell));
-	return (execute_pipeline_loop(cmds, shell, cmd_count));
 }

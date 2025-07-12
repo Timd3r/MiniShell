@@ -34,20 +34,9 @@ static int	process_command_args(t_simple_cmd *cmd, t_token **tokens,
 
 static void	process_arg_expansion(t_simple_cmd *cmd, t_shell *shell)
 {
-	char	*processed_value;
-	int		i;
-
-	i = 0;
-	while (cmd->args[i])
-	{
-		processed_value = process_token_quotes(cmd->args[i], shell);
-		if (processed_value)
-		{
-			free(cmd->args[i]);
-			cmd->args[i] = processed_value;
-		}
-		i++;
-	}
+	process_args_quotes(cmd, shell);
+	process_file_quotes(&cmd->input_file, shell);
+	process_file_quotes(&cmd->output_file, shell);
 }
 
 t_simple_cmd	*parse_simple_command_shell(t_token **tokens, t_shell *shell)

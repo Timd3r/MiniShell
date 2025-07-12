@@ -70,3 +70,36 @@ void	free_simple_cmd(t_simple_cmd *cmd)
 		free(cmd->output_file);
 	free(cmd);
 }
+
+void	process_args_quotes(t_simple_cmd *cmd, t_shell *shell)
+{
+	char	*processed_value;
+	int		i;
+
+	i = 0;
+	while (cmd->args[i])
+	{
+		processed_value = process_token_quotes(cmd->args[i], shell);
+		if (processed_value)
+		{
+			free(cmd->args[i]);
+			cmd->args[i] = processed_value;
+		}
+		i++;
+	}
+}
+
+void	process_file_quotes(char **file, t_shell *shell)
+{
+	char	*processed_value;
+
+	if (*file)
+	{
+		processed_value = process_token_quotes(*file, shell);
+		if (processed_value)
+		{
+			free(*file);
+			*file = processed_value;
+		}
+	}
+}

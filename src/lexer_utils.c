@@ -38,24 +38,14 @@ int	get_word_len(const char *str)
 	int	i;
 
 	i = 0;
-	if (str[i] == '"')
+	while (str[i] && str[i] != ' ' && str[i] != '\t' && str[i] != '|'
+		&& str[i] != '<' && str[i] != '>')
 	{
-		i++;
-		while (str[i] != '"')
-			i++;
-		i++;
-	}
-	else if (str[i] == '\'')
-	{
-		i++;
-		while (str[i] != '\'')
-			i++;
-		i++;
-	}
-	else
-	{
-		while (str[i] && str[i] != ' ' && str[i] != '\t' && str[i] != '|'
-			&& str[i] != '<' && str[i] != '>')
+		if (str[i] == '"')
+			i = skip_double_quote(str, i);
+		else if (str[i] == '\'')
+			i = skip_single_quote(str, i);
+		else
 			i++;
 	}
 	return (i);

@@ -72,6 +72,14 @@ typedef struct s_pipe_cmd_params
 	t_shell			*shell;
 }	t_pipe_cmd_params;
 
+typedef struct s_pipe_segment_params
+{
+	t_token			**tokens;
+	t_simple_cmd	**cmds;
+	int				*idxs;
+	t_shell			*shell;
+}	t_pipe_segment_params;
+
 int				ft_strcmp(const char *s1, const char *s2);
 char			*ft_strjoin_free(char *s1, char const *s2);
 void			ft_free_split(char **split);
@@ -98,6 +106,8 @@ int				handle_output_ops(const char **current_pos, t_token ***tokens,
 					int *token_idx);
 void			handle_quoted_word(const char **current_pos, char *word_val,
 					int word_len);
+int				skip_double_quote(const char *str, int i);
+int				skip_single_quote(const char *str, int i);
 
 t_token			**make_tokens(char *line);
 
@@ -108,6 +118,8 @@ int				count_args(t_token **tokens);
 t_simple_cmd	*init_simple_cmd(int arg_count);
 int				process_redirections(t_simple_cmd *cmd, t_token **tokens,
 					int *i);
+void			process_args_quotes(t_simple_cmd *cmd, t_shell *shell);
+void			process_file_quotes(char **file, t_shell *shell);
 
 int				execute_simple_command(t_simple_cmd *cmd);
 int				execute_simple_command_shell(t_simple_cmd *cmd, t_shell *shell);
@@ -139,6 +151,13 @@ int				execute_pipeline_shell(t_simple_cmd **cmds, t_shell *shell);
 int				**create_pipes(int count);
 void			execute_piped_command(t_simple_cmd *cmd, int **pipes, int idx,
 					int total);
+t_simple_cmd	**setup_pipe_params(t_token **tokens, t_shell *shell,
+					t_pipe_segment_params *params, int *idxs);
+int				process_pipe_tokens(t_token **tokens,
+					t_pipe_segment_params *params);
+int				process_pipe_segment_shell(t_pipe_segment_params *params,
+					int i);
+t_simple_cmd	**allocate_pipeline(int pipe_count);
 void			execute_piped_command_shell(t_pipe_cmd_params *params);
 void			execute_builtin_in_pipe(t_pipe_cmd_params *params);
 void			execute_external_in_pipe(t_pipe_cmd_params *params);
@@ -149,7 +168,8 @@ int				wait_for_children(int count);
 void			free_pipes(int **pipes, int count);
 void			free_pipeline(t_simple_cmd **cmds);
 t_simple_cmd	*parse_command_segment(t_token **tokens, int start, int end);
-t_simple_cmd	*parse_command_segment_shell(t_token **tokens, int start, int end, t_shell *shell);
+t_simple_cmd	*parse_command_segment_shell(t_token **tokens, int start,
+					int end, t_shell *shell);
 
 /* Environment expansion functions */
 char			*expand_variables(char *str, t_shell *shell);
