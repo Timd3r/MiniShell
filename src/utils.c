@@ -64,6 +64,7 @@ int	wait_for_children(int count)
 	int	last_status;
 	int	i;
 
+	status = 0;
 	setup_exec_wait_signals();
 	last_status = 0;
 	i = 0;
