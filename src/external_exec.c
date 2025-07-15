@@ -6,7 +6,7 @@
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 15:45:00 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/30 15:45:00 by tde-raev         ###   ########.fr       */
+/*   Updated: 2025/07/15 15:33:52 by tde-raev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ static int	parent_process(pid_t pid, char *executable_path)
 {
 	int	status;
 
+	status = 0;
 	if (pid > 0)
 	{
 		setup_exec_wait_signals();

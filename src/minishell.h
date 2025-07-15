@@ -6,7 +6,7 @@
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:06:14 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/31 01:36:39 by mikellen         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:11:30 by tde-raev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,5 +206,7 @@ void			safe_exit_shell(int exit_code, t_token **tokens,
 					t_simple_cmd *cmd);
 int				validate_exit_arg(char *arg, t_shell *shell);
 int				calculate_exit_status(char *arg, t_shell *shell);
+
+void			increment_shlvl(void);
 
 #endif

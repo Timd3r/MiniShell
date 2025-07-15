@@ -6,7 +6,7 @@
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:00:38 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/26 15:47:38 by tde-raev         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:13:23 by tde-raev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int	main(void)
 	shell.last_exit_status = 0;
 	prompt = "\033[1;36mMiniShell\033[0m\033[1;31m> \033[0m";
 	setup_signals();
+	increment_shlvl();
 	shell_loop(&shell, prompt);
 	clear_history();
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 03:00:00 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/31 03:00:00 by tde-raev         ###   ########.fr       */
+/*   Updated: 2025/07/15 15:37:21 by tde-raev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	handle_builtin_child(t_simple_cmd *cmd, t_shell *shell)
 {
 	int	status;
 
+	status = 0;
 	if (handle_redirections(cmd) != 0)
 		exit(1);
 	status = execute_builtin_shell(cmd, shell);
@@ -32,6 +33,7 @@ static int	handle_builtin_parent(pid_t pid)
 {
 	int	status;
 
+	status = 0;
 	if (pid < 0)
 	{
 		perror("minishell: fork failed");

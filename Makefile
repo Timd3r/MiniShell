@@ -6,7 +6,7 @@
 #    By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/22 16:36:00 by tde-raev          #+#    #+#              #
-#    Updated: 2025/06/05 17:57:18 by tde-raev         ###   ########.fr        #
+#    Updated: 2025/07/15 16:09:23 by tde-raev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRC = src/minishell.c src/lexer_utils.c src/system_utils.c src/string_utils.c \
       src/builtin2.c src/builtin_extra.c src/builtin_export_utils.c \
       src/builtin_cd_utils.c src/external_exec.c src/executor.c src/utils.c \
       src/pipes.c src/pipes2.c src/pipes3.c src/env_expansion.c src/quote_handler.c src/quote_handler_utils.c \
+	  src/env_utils.c \
       src/signal_handler.c src/exit_utils.c src/eof_handler.c \
       src/syntax_validator.c
 OBJ = obj

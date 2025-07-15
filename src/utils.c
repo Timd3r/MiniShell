@@ -6,7 +6,7 @@
 /*   By: tde-raev <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:23:05 by tde-raev          #+#    #+#             */
-/*   Updated: 2025/05/21 13:08:15 by tde-raev         ###   ########.fr       */
+/*   Updated: 2025/07/15 15:36:15 by tde-raev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	wait_for_children(int count)
 	int	last_status;
 	int	i;
 
+	status = 0;
 	setup_exec_wait_signals();
 	last_status = 0;
 	i = 0;
