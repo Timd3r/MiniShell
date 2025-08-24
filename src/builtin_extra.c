@@ -58,6 +58,7 @@ int	builtin_export(t_simple_cmd *cmd, t_shell *shell)
 			return (1);
 		i++;
 	}
+	update_shell_env(shell);
 	return (0);
 }
 
@@ -74,5 +75,6 @@ int	builtin_unset(t_simple_cmd *cmd, t_shell *shell)
 		shell->env = environ;
 		i++;
 	}
+	update_shell_env(shell);
 	return (0);
 }

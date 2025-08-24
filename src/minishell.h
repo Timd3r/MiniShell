@@ -125,6 +125,7 @@ int				is_builtin(char *cmd);
 int				execute_builtin_shell(t_simple_cmd *cmd, t_shell *shell);
 int				builtin_echo(t_simple_cmd *cmd);
 int				builtin_cd(t_simple_cmd *cmd);
+int				builtin_cd_shell(t_simple_cmd *cmd, t_shell *shell);
 int				builtin_env(t_simple_cmd *cmd, t_shell *shell);
 int				builtin_export(t_simple_cmd *cmd, t_shell *shell);
 void			print_exported_vars(t_shell *shell);
@@ -199,6 +200,7 @@ int				validate_export_name(char *name, char *arg);
 
 char			**dup_env(char **envp);
 void			update_pwd_env(void);
+void			update_shell_env(t_shell *shell);
 void			handle_command_not_found(char *cmd_name);
 
 void			cleanup_current_command(t_token **tokens, t_simple_cmd *cmd);
